@@ -1,4 +1,4 @@
 <div class="contact-item">
-  <strong>Alias: </strong> {{ contact.alias }} <strong>Phone Number: </strong> {{ contact.phoneNo }}
+  <strong>Id: </strong> {{ contact.id }} <strong>Alias: </strong> {{ contact.alias }} <strong>Phone Number: </strong> {{ contact.phoneNo }}
   <button [routerLink]="['/contact-details']" [queryParams]="{ id: contact.id }">Go To Details</button>
 </div>
