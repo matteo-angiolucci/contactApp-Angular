@@ -11,11 +11,11 @@
 
     <div class="firstName_input">
       <label for="firstName">First Name: </label>
-      <input id="firstName" formControlName="firstName" type="text" />
-      <div *ngIf="contactForm.get('firstName')?.invalid && contactForm.get('firstName')?.touched"
+      <input id="firstName" formControlName="firstName" type="text" [class.error-border]="firstName.invalid && firstName.touched"/>
+      <div *ngIf="firstName?.invalid && firstName?.touched"
         class="error-container">
-        <small *ngIf="contactForm.get('firstName')?.errors?.['required']">FirstName is required</small>
-        <small *ngIf="contactForm.get('name')?.errors?.['minlength']">
+        <small *ngIf="firstName?.errors?.['required']">FirstName is required</small>
+        <small *ngIf="firstName.errors?.['minlength']">
           firstName must be at least 3 characters long
         </small>
       </div>
@@ -32,7 +32,7 @@
 
     <div class="alias_input">
       <label for="alias">Alias: </label>
-      <input id="alias" formControlName="alias" type="text" />
+      <input id="alias" formControlName="alias" type="text" [class.error-border]="alias.invalid && alias.touched"/>
       <div *ngIf="contactForm.get('alias')?.invalid && contactForm.get('alias')?.touched" class="error-container">
         <small *ngIf="contactForm.get('alias')?.errors?.['required']">Alias is required</small>
       </div>
@@ -40,7 +40,7 @@
 
     <div class="lastName_input">
       <label for="lastName">Last Name: </label>
-      <input id="lastName" formControlName="lastName" type="text" />
+      <input id="lastName" formControlName="lastName" type="text" [class.error-border]="lastName.invalid && lastName.touched"/>
       <div *ngIf="contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched" class="error-container">
         <small *ngIf="contactForm.get('lastName')?.errors?.['required']">LastName is required</small>
         <small *ngIf="contactForm.get('lastName')?.errors?.['minlength']">
@@ -52,7 +52,7 @@
 
     <div class="phone_input">
       <label for="phone">Phone Number (XXX-XXXXXX): </label>
-      <input id="phoneNo" formControlName="phoneNo" type="text" />
+      <input id="phoneNo" formControlName="phoneNo" type="text" [class.error-border]="phoneNo.invalid && phoneNo.touched" />
       <div *ngIf="contactForm.get('phoneNo')?.invalid && contactForm.get('phoneNo')?.touched" class="error-container">
         <small *ngIf="contactForm.get('phoneNo')?.errors?.['required']">Phone number is required</small>
         <small *ngIf="contactForm.get('phoneNo')?.errors?.['phoneFormat']">

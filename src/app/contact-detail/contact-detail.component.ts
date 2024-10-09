@@ -145,4 +145,25 @@ export class ContactDetailComponent implements OnInit {
   goBackToHome() {
     this.route.navigate(['/home']);
   }
+
+  get firstName(){
+    return this.contactForm.controls.firstName;
+  }
+
+  get email(){
+    return this.contactForm.controls.email;
+  }
+
+  get alias(){
+    return this.contactForm.controls.alias;
+  }
+
+  get lastName(){
+    return this.contactForm.controls.lastName;
+  }
+
+  get phoneNo(){
+    return this.contactForm.controls.phoneNo;
+  }
+
 }
