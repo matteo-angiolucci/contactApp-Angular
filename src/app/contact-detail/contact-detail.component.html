@@ -1,0 +1,72 @@
+<div class="container-form">
+
+
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+
+    <div class="title">
+      <h1 *ngIf="!this.contactId">New Contact</h1>
+      <h1 *ngIf="this.contactId"> Edit or delete the current contact</h1>
+    </div>
+
+    <div class="firstName_input">
+      <label for="firstName">First Name: </label>
+      <input id="firstName" formControlName="firstName" type="text" />
+      <div *ngIf="contactForm.get('firstName')?.invalid && contactForm.get('firstName')?.touched"
+        class="error-container">
+        <small *ngIf="contactForm.get('firstName')?.errors?.['required']">FirstName is required</small>
+        <small *ngIf="contactForm.get('name')?.errors?.['minlength']">
+          firstName must be at least 3 characters long
+        </small>
+      </div>
+    </div>
+
+
+    <div class="email_input">
+      <label for="email">Email: </label>
+      <input id="email" formControlName="email" type="email" />
+      <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="error-container">
+        <small *ngIf="contactForm.get('email')?.errors?.['email']">Enter a valid email</small>
+      </div>
+    </div>
+
+    <div class="alias_input">
+      <label for="alias">Alias: </label>
+      <input id="alias" formControlName="alias" type="text" />
+      <div *ngIf="contactForm.get('alias')?.invalid && contactForm.get('alias')?.touched" class="error-container">
+        <small *ngIf="contactForm.get('alias')?.errors?.['required']">Alias is required</small>
+      </div>
+    </div>
+
+    <div class="lastName_input">
+      <label for="lastName">Last Name: </label>
+      <input id="lastName" formControlName="lastName" type="text" />
+      <div *ngIf="contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched" class="error-container">
+        <small *ngIf="contactForm.get('lastName')?.errors?.['required']">LastName is required</small>
+        <small *ngIf="contactForm.get('lastName')?.errors?.['minlength']">
+          Last name must be at least 3 characters long
+        </small>
+      </div>
+    </div>
+
+
+    <div class="phone_input">
+      <label for="phone">Phone Number (XXX-XXXXXX): </label>
+      <input id="phoneNo" formControlName="phoneNo" type="text" />
+      <div *ngIf="contactForm.get('phoneNo')?.invalid && contactForm.get('phoneNo')?.touched" class="error-container">
+        <small *ngIf="contactForm.get('phoneNo')?.errors?.['required']">Phone number is required</small>
+        <small *ngIf="contactForm.get('phoneNo')?.errors?.['phoneFormat']">
+          Phone number must be in the format XXX-XXXXXX
+        </small>
+      </div>
+    </div>
+
+    <div class="button-actions">
+      <button *ngIf="!isEditing && contactId" type="button" (click)="enableForm()">Edit</button>
+      <button *ngIf="!isEditing && contactId" type="button" (click)="deleteContact()">Delete</button>
+      <button *ngIf="!contactId || isEditing"type="submit" [disabled]="contactForm.invalid">Save</button>
+      <button *ngIf="isEditing" type="button" (click)="cancelEdit()">Cancel</button>
+      <button *ngIf="!isEditing" type="button" (click)="goBackToHome()">Go back to Contacts List</button>
+    </div>
+  </form>
+</div>

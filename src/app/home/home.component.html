@@ -1,0 +1,32 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+
+<div class="alphabet">
+  <div *ngFor="let letter of alphabet"
+      (click)="filterByLetter(letter)"
+      >
+    <p [ngClass]="{'selected-letter': selectedLetter === letter}" class="letter">{{ letter }}</p>
+  </div>
+</div>
+
+<div class="action-buttons">
+  <button class="add-action" (click)="addNewContact()">Add new contact</button>
+</div>
+
+<ng-template #contactListTemplate>
+  <ul>
+    <app-contact-item
+      *ngFor="let contact of filteredContacts"
+      [contact]="contact"
+    ></app-contact-item>
+  </ul>
+</ng-template>
+
+
+<ng-template #noContactsTemplate>
+  <div class="no-contacts-message">
+    No contacts found for the letter "{{ selectedLetter }}"
+  </div>
+</ng-template>
+
+
+<div [ngTemplateOutlet]="filteredContacts.length > 0 ? contactListTemplate : noContactsTemplate"></div>
