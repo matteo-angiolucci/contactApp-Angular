@@ -62,11 +62,11 @@
     </div>
 
     <div class="button-actions">
-      <button *ngIf="!isEditing && contactId" type="button" (click)="enableForm()">Edit</button>
-      <button *ngIf="!isEditing && contactId" type="button" (click)="deleteContact()">Delete</button>
-      <button *ngIf="!contactId || isEditing"type="submit" [disabled]="contactForm.invalid">Save</button>
-      <button *ngIf="isEditing" type="button" (click)="cancelEdit()">Cancel</button>
-      <button *ngIf="!isEditing" type="button" (click)="goBackToHome()">Go back to Contacts List</button>
+      <button class="button-edit" *ngIf="!isEditing && contactId" type="button" (click)="enableForm()">Edit</button>
+      <button class="button-edit" *ngIf="!isEditing && contactId" type="button" (click)="deleteContact()">Delete</button>
+      <button class="button-edit" *ngIf="!contactId || isEditing"type="submit" [disabled]="contactForm.invalid">Save</button>
+      <button class="button-edit" *ngIf="isEditing" type="button" (click)="cancelEdit()">Cancel</button>
+      <button class="button-edit" *ngIf="!isEditing" type="button" (click)="goBackToHome()">Go back to Contacts List</button>
     </div>
   </form>
 </div>

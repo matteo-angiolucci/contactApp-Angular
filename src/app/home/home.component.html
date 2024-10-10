@@ -13,12 +13,12 @@
 </div>
 
 <ng-template #contactListTemplate>
-  <ul>
+  <div class="card-display">
     <app-contact-item
       *ngFor="let contact of filteredContacts"
       [contact]="contact"
     ></app-contact-item>
-  </ul>
+  </div>
 </ng-template>
 
 
