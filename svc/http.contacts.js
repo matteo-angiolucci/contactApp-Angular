@@ -36,7 +36,7 @@ findById = (content, id) => {
 };
 
 parseList = (content) => {
-  return content.map(({ id, alias, phoneNo }) => ({ id, alias, phoneNo }));
+  return content.map(({ id, alias, phoneNo, categoryId }) => ({ id, alias, phoneNo, categoryId }));
 };
 
 main = () => {
@@ -103,7 +103,7 @@ main = () => {
       res.status(204).send(payload);
       return;
     }
-    content = { ...content[idx], ...payload };
+    content[idx] = { ...content[idx], ...payload };
 
     await saveContent(content);
 

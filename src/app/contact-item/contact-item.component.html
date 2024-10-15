@@ -1,12 +1,15 @@
 <div class="contact-item">
-  <div class="id-container">
+  <!-- <div class="id-container">
     <strong> Id: </strong> {{ contact.id }}
-  </div>
+  </div> -->
   <div class="alias-container">
     <strong> Alias: </strong> {{ contact.alias }}
   </div>
   <div class="phonenumber-container">
     <strong> Phone Number: </strong> {{ contact.phoneNo }}
+  </div>
+  <div class="category-container">
+    <strong> Category: </strong> {{ contact.categoryName }}
   </div>
   <div class="button-container">
     <button [routerLink]="['/contact-details']" [queryParams]="{ id: contact.id }">Go To Details</button>

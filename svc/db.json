@@ -1,5 +1,6 @@
 [
     {
+        "categoryId": 1,
         "firstName": "Gracee",
         "lastName": "Anderson",
         "email": "gracee.anderson@example.com",
@@ -8,6 +9,7 @@
         "id": "9"
     },
     {
+        "categoryId": 2,
         "firstName": "Henry",
         "lastName": "Thomas",
         "email": "henry.thomas@example.com",
@@ -16,6 +18,7 @@
         "id": "10"
     },
     {
+        "categoryId": 1,
         "firstName": "Janet",
         "lastName": "Smith",
         "email": "janet.smith@example.com",
@@ -24,11 +27,39 @@
         "id": "6760593037996028"
     },
     {
+        "categoryId": 1,
         "firstName": "Aleck",
         "lastName": "LastName",
         "email": "aleck@testemail.com",
         "phoneNo": "231-654321",
         "alias": "AleC",
         "id": "1165272012501577"
+    },
+    {
+        "firstName": "testCategory",
+        "lastName": "lastName",
+        "email": "category@valid.com",
+        "phoneNo": "123-123456",
+        "alias": "categoryTest",
+        "categoryId": 1,
+        "id": "37399352923853724"
+    },
+    {
+        "firstName": "testContact",
+        "lastName": "lastName",
+        "email": "test@email.com",
+        "phoneNo": "123-321452",
+        "alias": "testContactCat",
+        "categoryId": 1,
+        "id": "6183947454854972"
+    },
+    {
+        "firstName": "Lory",
+        "lastName": "Lars",
+        "email": "lory@email.com",
+        "phoneNo": "123-456789",
+        "alias": "Lori",
+        "categoryId": 3,
+        "id": "4982264350416301"
     }
 ]

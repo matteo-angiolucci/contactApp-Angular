@@ -4,6 +4,8 @@ import { IContactListItem } from '@dm/contact-list-item.model';
 import { ContactService } from 'app/services/contact.service';
 import { ContactItemComponent } from "../contact-item/contact-item.component";
 import { Router } from '@angular/router';
+import { CategoryService } from 'app/services/category.service';
+import { combineLatest, map } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,16 +23,32 @@ export class HomeComponent implements OnInit {
   alphabet: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
   constructor(private contactSrc : ContactService,
-              private router : Router
+              private router : Router,
+              private categorySrc : CategoryService
   ){
 
   }
 
   ngOnInit(){
-    this.contactSrc.getContacts().subscribe({
-      next: (data: IContactListItem[]) => {
-        this.contacts = data;
-        this.filteredContacts = data;
+
+    combineLatest([
+      this.contactSrc.getContacts(),
+      this.categorySrc.getCategories()
+    ]).pipe(
+      map(([contacts, categories]) => {
+        // Map over contacts and find corresponding category name
+        return contacts.map(contact => {
+          const category = categories.find(cat => cat.id === contact.categoryId);
+          return {
+            ...contact,
+            categoryName: category ? category.name : 'Unknown'
+          };
+        });
+      })
+    ).subscribe({
+      next: (combinedData) => {
+        this.contacts = combinedData;
+        this.filteredContacts = combinedData;
       }
     });
   }

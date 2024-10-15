@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router  } from '@angular/router';
 import { IContactDetails } from '@dm/contact-details.model';
+import { CategoryService } from 'app/services/category.service';
 import { ContactService } from 'app/services/contact.service';
 
 @Component({
@@ -41,6 +42,7 @@ export class ContactDetailComponent implements OnInit {
       Validators.minLength(3),
     ]),
     alias: new FormControl('', [Validators.required]),
+    categoryId : new FormControl('', Validators.required),
     id: new FormControl(),
   });
 
@@ -48,6 +50,7 @@ export class ContactDetailComponent implements OnInit {
     private contactSrv: ContactService,
     private router: ActivatedRoute,
     private route: Router,
+    public categoriesService : CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -77,7 +80,8 @@ export class ContactDetailComponent implements OnInit {
         email: formValues.email || '',
         phoneNo: formValues.phoneNo || '',
         alias: formValues.alias || '',
-        id : this.contactId || undefined
+        id : this.contactId || undefined,
+        categoryId : Number(formValues.categoryId) || 1
       };
       if (!this.isEditing) {
         this.contactSrv.createContact(contactData).subscribe(
@@ -113,7 +117,14 @@ export class ContactDetailComponent implements OnInit {
 
   loadContact(id: number): void {
     this.contactSrv.getContact(id).subscribe((contact: IContactDetails) => {
-      this.contactForm.patchValue (contact);
+      this.contactForm.patchValue({
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+        email: contact.email,
+        phoneNo: contact.phoneNo,
+        alias: contact.alias,
+        categoryId: contact.categoryId.toString()
+      });
       this.isEditing = false;
       this.initialData = contact;
     });
@@ -137,7 +148,14 @@ export class ContactDetailComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    this.contactForm.patchValue(this.initialData);
+    this.contactForm.patchValue({
+      firstName: this.initialData.firstName,
+      lastName: this.initialData.lastName,
+      email: this.initialData.email,
+      phoneNo: this.initialData.phoneNo,
+      alias: this.initialData.alias,
+      categoryId: this.initialData.categoryId.toString()
+    });
     this.disableForm();
     this.isEditing = false;
   }
@@ -164,6 +182,10 @@ export class ContactDetailComponent implements OnInit {
 
   get phoneNo(){
     return this.contactForm.controls.phoneNo;
+  }
+
+  get category(){
+    return this.contactForm.controls.categoryId;
   }
 
 }

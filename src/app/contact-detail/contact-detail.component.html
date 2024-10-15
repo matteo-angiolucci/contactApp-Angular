@@ -61,6 +61,19 @@
       </div>
     </div>
 
+    <div class="category_input">
+      <label for="Category">Category: </label>
+      <select id="categoryId" formControlName="categoryId">
+        <option *ngFor="let category of this.categoriesService.getCategories() | async" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div *ngIf="contactForm.get('categoryId')?.invalid && contactForm.get('categoryId')?.touched" class="error-container">
+        <small *ngIf="contactForm.get('categoryId')?.errors?.['required']">Category field is required</small>
+
+      </div>
+    </div>
+
     <div class="button-actions">
       <button class="button-edit" *ngIf="!isEditing && contactId" type="button" (click)="enableForm()">Edit</button>
       <button class="button-edit" *ngIf="!isEditing && contactId" type="button" (click)="deleteContact()">Delete</button>

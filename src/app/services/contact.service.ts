@@ -13,6 +13,8 @@ export class ContactService {
 
   constructor(private http: HttpClient) {}
 
+
+
   getContacts(): Observable<IContactListItem[]> {
     return this.http.get<IContactListItem[]>(`${this.apiUrl}/list`);
   }
