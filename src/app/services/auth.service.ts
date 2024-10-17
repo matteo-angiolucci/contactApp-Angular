@@ -51,7 +51,7 @@ export class AuthService {
 
   userName$(): Observable<string | undefined>{
     return this.user$.pipe(
-      map(value => value?.username)
+      map(value => value?.name)
     )
   }
 

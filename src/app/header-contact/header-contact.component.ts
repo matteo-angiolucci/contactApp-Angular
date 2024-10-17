@@ -14,6 +14,9 @@ import { Observable } from 'rxjs';
   styleUrl: './header-contact.component.less',
 })
 export class HeaderContactComponent{
+adminUser() {
+throw new Error('Method not implemented.');
+}
   user$: Observable<ILoginResponse | null>;
 
 

@@ -1,9 +1,10 @@
 <div class="container">
   <p class="bold title">Contact App List</p>
   <div class="action-container">
-    <ng-container *ngIf="(user$ | async)">
-      <p>Welcome! {{ (user$ | async)?.username }}</p>
-      <button (click)="logOut()">Log out</button>
+    <ng-container *ngIf="(user$ | async) as user">
+      <p>Welcome! {{ user.name }} - Role : {{ user.role }}</p>
+      <button *ngIf="user.role ==='Admin'" class="user-admin" (click)="adminUser()">User Admin</button>
+      <button  class="log-out" (click)="logOut()">Log out</button>
     </ng-container>
   </div>
 </div>

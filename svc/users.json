@@ -1,14 +1,92 @@
 [
-  {
-    "email": "user@example.com",
-    "password": "securepassword123",
-    "username" : "user1",
-    "role" : "Admin"
-  },
-  {
-    "email": "user@example1.com",
-    "password": "securepassword",
-    "username" : "user2",
-    "role" : "User"
-  }
+    {
+        "id": "1234567890123456",
+        "email": "alice@example.com",
+        "password": "password123",
+        "name": "Alice",
+        "role": "User",
+        "lastName": "Smith",
+        "dateOfBirth": "1990-05-20T00:00:00.000Z"
+    },
+    {
+        "id": "2345678901234567",
+        "email": "bob@example.com",
+        "password": "securePass1",
+        "name": "Bob",
+        "role": "Admin",
+        "lastName": "Johnson",
+        "dateOfBirth": "1985-11-12T00:00:00.000Z"
+    },
+    {
+        "id": "3456789012345678",
+        "email": "charlie@example.com",
+        "password": "mySecret2",
+        "name": "Charlie",
+        "role": "User",
+        "lastName": "Brown",
+        "dateOfBirth": "1992-07-08T00:00:00.000Z"
+    },
+    {
+        "id": "4567890123456789",
+        "email": "dave@example.com",
+        "password": "password321",
+        "name": "Dave",
+        "role": "User",
+        "lastName": "Davis",
+        "dateOfBirth": "1995-03-15T00:00:00.000Z"
+    },
+    {
+        "id": "5678901234567890",
+        "email": "eve@example.com",
+        "password": "letmein123",
+        "name": "Eve",
+        "role": "User",
+        "lastName": "Garcia",
+        "dateOfBirth": "1998-01-25T00:00:00.000Z"
+    },
+    {
+        "id": "6789012345678901",
+        "email": "frank@example.com",
+        "password": "frankpass123",
+        "name": "Frank",
+        "role": "User",
+        "lastName": "Martinez",
+        "dateOfBirth": "1988-09-10T00:00:00.000Z"
+    },
+    {
+        "id": "7890123456789012",
+        "email": "grace@example.com",
+        "password": "gracepass456",
+        "name": "Grace",
+        "role": "User",
+        "lastName": "Hernandez",
+        "dateOfBirth": "1993-06-18T00:00:00.000Z"
+    },
+    {
+        "id": "8901234567890123",
+        "email": "hank@example.com",
+        "password": "hankpass789",
+        "name": "Hank",
+        "role": "User",
+        "lastName": "Lopez",
+        "dateOfBirth": "1980-12-30T00:00:00.000Z"
+    },
+    {
+        "id": "8901234567890123",
+        "email": "user@mail.com",
+        "password": "password123",
+        "name": "Hank",
+        "role": "User",
+        "lastName": "Lopez",
+        "dateOfBirth": "1980-12-30T00:00:00.000Z"
+    },
+    {
+        "id": "2801587896151465",
+        "email": "test@email.com",
+        "password": "123",
+        "name": "test",
+        "role": "Admin",
+        "lastName": "test",
+        "dateOfBirth": "2024-10-17T00:00:00.000Z"
+    }
 ]

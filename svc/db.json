@@ -1,65 +1,74 @@
 [
-    {
-        "categoryId": 1,
-        "firstName": "Gracee",
-        "lastName": "Anderson",
-        "email": "gracee.anderson@example.com",
-        "phoneNo": "000-456789",
-        "alias": "GraceeA",
-        "id": "9"
-    },
-    {
-        "categoryId": 2,
-        "firstName": "Henry",
-        "lastName": "Thomas",
-        "email": "henry.thomas@example.com",
-        "phoneNo": "012-345678",
-        "alias": "HThomas",
-        "id": "10"
-    },
-    {
-        "categoryId": 1,
-        "firstName": "Janet",
-        "lastName": "Smith",
-        "email": "janet.smith@example.com",
-        "phoneNo": "234-567890",
-        "alias": "JSmith",
-        "id": "6760593037996028"
-    },
-    {
-        "categoryId": 1,
-        "firstName": "Aleck",
-        "lastName": "LastName",
-        "email": "aleck@testemail.com",
-        "phoneNo": "231-654321",
-        "alias": "AleC",
-        "id": "1165272012501577"
-    },
-    {
-        "firstName": "testCategory",
-        "lastName": "lastName",
-        "email": "category@valid.com",
-        "phoneNo": "123-123456",
-        "alias": "categoryTest",
-        "categoryId": 1,
-        "id": "37399352923853724"
-    },
-    {
-        "firstName": "testContact",
-        "lastName": "lastName",
-        "email": "test@email.com",
-        "phoneNo": "123-321452",
-        "alias": "testContactCat",
-        "categoryId": 1,
-        "id": "6183947454854972"
-    },
-    {
-        "firstName": "Lory",
-        "lastName": "Lars",
-        "email": "lory@email.com",
-        "phoneNo": "123-456789",
-        "alias": "Lori",
-        "categoryId": 3,
-        "id": "4982264350416301"
-    }
+  {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "phoneNo": "555-1234",
+      "alias": "Johnny",
+      "categoryId": 1,
+      "id": "4220998576047972"
+  },
+  {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "phoneNo": "555-5678",
+      "alias": "Janey",
+      "categoryId": 2,
+      "id": "4220998576047973"
+  },
+  {
+      "firstName": "Michael",
+      "lastName": "Johnson",
+      "email": "michael.johnson@example.com",
+      "phoneNo": "555-8765",
+      "alias": "Mike",
+      "categoryId": 3,
+      "id": "4220998576047974"
+  },
+  {
+      "firstName": "Emily",
+      "lastName": "Davis",
+      "email": "emily.davis@example.com",
+      "phoneNo": "555-4321",
+      "alias": "Em",
+      "categoryId": 1,
+      "id": "4220998576047975"
+  },
+  {
+      "firstName": "Daniel",
+      "lastName": "Garcia",
+      "email": "daniel.garcia@example.com",
+      "phoneNo": "555-6789",
+      "alias": "Danny",
+      "categoryId": 2,
+      "id": "4220998576047976"
+  },
+  {
+      "firstName": "Olivia",
+      "lastName": "Martinez",
+      "email": "olivia.martinez@example.com",
+      "phoneNo": "555-2468",
+      "alias": "Liv",
+      "categoryId": 3,
+      "id": "4220998576047977"
+  },
+  {
+      "firstName": "James",
+      "lastName": "Hernandez",
+      "email": "james.hernandez@example.com",
+      "phoneNo": "555-1357",
+      "alias": "Jim",
+      "categoryId": 1,
+      "id": "4220998576047978"
+  },
+  {
+      "firstName": "Sophia",
+      "lastName": "Lopez",
+      "email": "sophia.lopez@example.com",
+      "phoneNo": "555-2468",
+      "alias": "Sophie",
+      "categoryId": 2,
+      "id": "4220998576047979"
+  }
 ]

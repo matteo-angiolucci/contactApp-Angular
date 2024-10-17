@@ -7,7 +7,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:my-contacts": "node dist/my-contacts/server/server.mjs",
-    "start": "concurrently \"ng serve\" \"node --inspect=9889 ./svc/http.contacts.js\"",
+     "start": "concurrently \"ng serve\" \"nodemon\"",
     "lint": "ng lint"
   },
   "private": true,
@@ -44,6 +44,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "nodemon": "^3.1.7",
     "typescript": "~5.5.2",
     "typescript-eslint": "8.2.0"
   }

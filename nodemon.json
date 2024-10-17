@@ -1,0 +1,6 @@
+{
+  "watch": ["svc"],
+  "ext": "js",
+  "ignore": ["node_modules"],
+  "exec": "node --inspect=9889 ./svc/http.contacts.js"
+}

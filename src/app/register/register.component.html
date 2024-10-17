@@ -1,0 +1,70 @@
+<div class="register-container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="title">
+      <h1>Register Form</h1>
+    </div>
+
+    <div class="email_input">
+      <label for="email">Email: </label>
+      <input id="email" formControlName="email" type="email" />
+      <div *ngIf="email?.invalid && email?.touched" class="error-container">
+        <small *ngIf="email?.errors?.['required']">Email is required</small>
+        <small *ngIf="email?.errors?.['email']">Enter a valid email</small>
+      </div>
+    </div>
+
+    <div class="password_input">
+      <label for="password">Password: </label>
+      <input id="password" formControlName="password" type="password"/>
+      <div *ngIf="password?.invalid && password?.touched" class="error-container">
+        <small *ngIf="password?.errors?.['required']">Password is required</small>
+      </div>
+    </div>
+
+    <div class="repeatPassword_input">
+      <label for="repeatPassword">Repeat password: </label>
+      <input id="repeatPassword" formControlName="repeatpassword" type="password" />
+      <div *ngIf="repeatpassword?.invalid" class="error-container">
+        <small *ngIf="!repeatpassword?.errors?.['required'] && repeatpassword?.errors?.['passwordMismatch']">Passwords do not match</small>
+      </div>
+    </div>
+
+    <div class="name_input">
+      <label for="name">Name: </label>
+      <input id="name" formControlName="firstname" type="text" />
+      <div *ngIf="firstname?.invalid && firstname?.touched" class="error-container">
+        <small *ngIf="firstname?.errors?.['required']">First name is required is required</small>
+      </div>
+    </div>
+
+    <div class="lastName_input">
+      <label for="lastName">Last name: </label>
+      <input id="lastName" formControlName="lastName" type="text" />
+      <div *ngIf="lastName?.invalid && lastName?.touched" class="error-container">
+        <small *ngIf="lastName?.errors?.['required']">lastName is required</small>
+      </div>
+    </div>
+
+    <div class="dateOfBirth_input">
+      <label for="dateOfBirth">Date of Birth: </label>
+      <input id="dateOfBirth" formControlName="dateOfBirth" type="date" />
+      <div *ngIf="dateOfBirth?.invalid && dateOfBirth?.touched" class="error-container">
+        <small *ngIf="dateOfBirth?.errors?.['required']">Date of birth is required</small>
+      </div>
+    </div>
+
+
+    <div class="button-actions">
+      <button type="submit" [disabled]="!registerForm.valid">Submit</button>
+    </div>
+
+    <ng-container *ngIf="errorMessage">
+      <div class="error-container">
+        <p>
+          {{ errorMessage }}
+        </p>
+      </div>
+    </ng-container>
+
+  </form>
+</div>
