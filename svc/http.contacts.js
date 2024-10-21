@@ -44,11 +44,16 @@ parseList = (content) => {
   return content.map(({ id, alias, phoneNo, categoryId }) => ({ id, alias, phoneNo, categoryId }));
 };
 
+
+parseListUsers = (content) => {
+  return content.map(({ id, email, password, role , active }) => ({ id, email, password, role, active }));
+};
+
 main = () => {
   const app = express();
   app.use(json());
 
-  // list
+  // get contacts List
   app.get("/api/contacts/list", async (_, res) => {
     const content = await loadContent(contactsDB);
     const result = parseList(content);
@@ -144,12 +149,16 @@ main = () => {
     const { email, password } = req.body;
     const users = await loadContent(usersDB);
 
-    debugger
 
     const user = await findUserByEmail(users, email);
 
+
     if (!user) {
       return res.status(401).send({ message: "User not found with the email provided"});
+    }
+
+    if(user.active === false){
+      return res.status(401).send({ message: "User not active contact an Admin to activate the account"});
     }
 
     try {
@@ -173,6 +182,56 @@ main = () => {
       console.error("Error comparing passwords:", error);
       return res.status(500).send("Server error");
     }
+  });
+
+    // get contacts List
+    app.get("/api/users/list", async (_, res) => {
+      const content = await loadContent(usersDB);
+      const result = parseListUsers(content);
+      res.status(200).send(result);
+    });
+
+
+   // Middleware to check if the user is an admin
+const isAdmin = (req, res, next) => {
+
+
+  // Assuming user information is stored in req.user
+  const user = req.body.loggedUser; // Replace this with your actual user extraction logic
+
+  // Check if the user exists and has the role of 'ADMIN'
+  if (user && user.role === 'Admin') {
+      next(); // Proceed to the next middleware/route handler
+  } else {
+      res.status(403).send({ message: "Operation denied. Admins only." }); // Send forbidden status
+  }
+};
+
+
+
+  // update a user
+  app.patch("/api/users/activeDeactive", isAdmin ,async (req, res) => {
+    const {loggedUser, user , active } = req.body;
+
+    const payload = req.user;
+    //console.log('PAYLOAD:' , payload);
+
+    const content = await loadContent(usersDB);
+
+    const idx = findIndex(content, user.id);
+
+    if (idx < 0) {
+      res.status(204).send(payload);
+      return;
+    }
+
+    content[idx] = { ...content[idx], active: active };
+
+    await saveContent(content, usersDB);
+
+    const contentFilter = content.filter(user => user.email !== loggedUser?.email)
+
+    res.status(200).send(contentFilter);
   });
 
 

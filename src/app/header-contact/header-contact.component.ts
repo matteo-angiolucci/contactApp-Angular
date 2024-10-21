@@ -1,8 +1,10 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ILoginResponse } from '@dm/ILogin-response.model';
+import { UserRole } from '@dm/roleEnum.enum';
 import { AuthService } from 'app/services/auth.service';
+import { UserService } from 'app/services/user.service';
 import { Observable } from 'rxjs';
 
 
@@ -13,15 +15,19 @@ import { Observable } from 'rxjs';
   templateUrl: './header-contact.component.html',
   styleUrl: './header-contact.component.less',
 })
-export class HeaderContactComponent{
-adminUser() {
-throw new Error('Method not implemented.');
-}
+export class HeaderContactComponent implements OnInit{
   user$: Observable<ILoginResponse | null>;
+  isOnAdminDashboard = false;
+  userRoles = UserRole;
 
-
-  constructor(private authService: AuthService, private route: Router) {
+  constructor(private authService: AuthService, private route: Router , private userService : UserService) {
     this.user$ = this.authService.user$;
+  }
+
+  ngOnInit(): void {
+     this.userService.isOnAdminDashboard$.subscribe(isOnAdminDashboard => {
+      this.isOnAdminDashboard = isOnAdminDashboard;
+    });
   }
 
 
@@ -30,7 +36,16 @@ throw new Error('Method not implemented.');
   }
 
   logOut() {
+    localStorage.removeItem('currentUser'); // Clear user data from localStorage
     this.route.navigate(['/login']);
     this.authService.unsetUser();
+  }
+
+  goToAdminorGoBack() {
+    if (!this.isOnAdminDashboard) {
+     this.route.navigate(['/admin-dashboard'])
+    } else {
+      this.route.navigate(['/home'])
+    }
   }
 }

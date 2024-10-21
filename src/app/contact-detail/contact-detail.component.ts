@@ -10,8 +10,12 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router  } from '@angular/router';
 import { IContactDetails } from '@dm/contact-details.model';
+import { ILoginResponse } from '@dm/ILogin-response.model';
+import { UserRole } from '@dm/roleEnum.enum';
+import { AuthService } from 'app/services/auth.service';
 import { CategoryService } from 'app/services/category.service';
 import { ContactService } from 'app/services/contact.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-contact-detail',
@@ -21,11 +25,16 @@ import { ContactService } from 'app/services/contact.service';
   styleUrl: './contact-detail.component.less',
 })
 export class ContactDetailComponent implements OnInit {
+
+  user$: Observable<ILoginResponse | null>;
+
   isEditing = false;
 
   initialData!: IContactDetails;
 
   contactId: number | null = null;
+
+  userRoleEnum = UserRole;
 
   contactForm = new FormGroup({
     firstName: new FormControl('', [
@@ -48,13 +57,16 @@ export class ContactDetailComponent implements OnInit {
 
   constructor(
     private contactSrv: ContactService,
-    private router: ActivatedRoute,
-    private route: Router,
-    public categoriesService : CategoryService
-  ) {}
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    public categoriesService : CategoryService,
+    private authService : AuthService
+  ) {
+    this.user$ = this.authService.user$
+  }
 
   ngOnInit(): void {
-    this.router.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe((params) => {
       this.contactId = params['id'] ? params['id'] : null;
       if (this.contactId) {
         this.loadContact(this.contactId);
@@ -86,7 +98,7 @@ export class ContactDetailComponent implements OnInit {
       if (!this.isEditing) {
         this.contactSrv.createContact(contactData).subscribe(
           (response) => {
-            this.route.navigate([], {
+            this.router.navigate([], {
               queryParams: { id: response.id },
               queryParamsHandling: 'merge',
             });
@@ -133,7 +145,7 @@ export class ContactDetailComponent implements OnInit {
   deleteContact(): void {
     if (this.contactId) {
       this.contactSrv.deleteContact(this.contactId).subscribe(() => {
-        this.route.navigate(['/home']);
+        this.router.navigate(['/home']);
       });
     }
   }
@@ -161,7 +173,7 @@ export class ContactDetailComponent implements OnInit {
   }
 
   goBackToHome() {
-    this.route.navigate(['/home']);
+    this.router.navigate(['/home']);
   }
 
   get firstName(){

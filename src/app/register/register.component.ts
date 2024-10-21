@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { IRegisterModel } from '@dm/register.model';
 import { UserRole } from '@dm/roleEnum.enum';
 import { AuthService } from 'app/services/auth.service';
+import { ageValidator } from 'app/utility/valiadators/age_validator';
 import { passwordMatchValidator } from 'app/utility/valiadators/password_match_validator';
 
 @Component({
@@ -25,10 +26,10 @@ export class RegisterComponent {
       repeatpassword: new FormControl('', [Validators.required]),
       firstname: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
-      dateOfBirth: new FormControl('', [Validators.required]),
+      dateOfBirth: new FormControl('', [Validators.required , ageValidator(16)]),
     },
     {
-      validators: passwordMatchValidator('password', 'repeatpassword'),
+      validators: [passwordMatchValidator('password', 'repeatpassword')]
     },
   );
 
@@ -71,6 +72,8 @@ export class RegisterComponent {
         ? new Date(registerForm.dateOfBirth)
         : new Date(),
       role: UserRole.User,
+      active : true
+
     };
 
     this.authService.register(registerData).subscribe({

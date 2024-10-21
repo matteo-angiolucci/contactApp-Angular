@@ -6,6 +6,7 @@ export interface IRegisterModel{
   password: string,
   role : UserRole,
   lastName : string,
-  dateOfBirth: Date
+  dateOfBirth: Date,
+  active: boolean
 
 }

@@ -5,13 +5,17 @@
     </div>
 
     <div class="email_input">
+      <div class="emailInline">
       <label for="email">Email: </label>
       <input id="email" formControlName="email" type="email" />
+    </div>
       <div *ngIf="email?.invalid && email?.touched" class="error-container">
         <small *ngIf="email?.errors?.['required']">Email is required</small>
         <small *ngIf="email?.errors?.['email']">Enter a valid email</small>
       </div>
     </div>
+
+    <div class="container-passwords">
 
     <div class="password_input">
       <label for="password">Password: </label>
@@ -28,6 +32,8 @@
         <small *ngIf="!repeatpassword?.errors?.['required'] && repeatpassword?.errors?.['passwordMismatch']">Passwords do not match</small>
       </div>
     </div>
+
+  </div>
 
     <div class="name_input">
       <label for="name">Name: </label>
@@ -50,6 +56,7 @@
       <input id="dateOfBirth" formControlName="dateOfBirth" type="date" />
       <div *ngIf="dateOfBirth?.invalid && dateOfBirth?.touched" class="error-container">
         <small *ngIf="dateOfBirth?.errors?.['required']">Date of birth is required</small>
+        <small *ngIf="dateOfBirth?.errors?.['underage']">You must be at least 16 years old to register</small>
       </div>
     </div>
 

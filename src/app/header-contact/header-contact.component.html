@@ -1,9 +1,9 @@
 <div class="container">
-  <p class="bold title">Contact App List</p>
+  <p class="bold title"> {{ isOnAdminDashboard ? 'ADMIN PAGE ':'Contact App List' }}</p>
   <div class="action-container">
     <ng-container *ngIf="(user$ | async) as user">
-      <p>Welcome! {{ user.name }} - Role : {{ user.role }}</p>
-      <button *ngIf="user.role ==='Admin'" class="user-admin" (click)="adminUser()">User Admin</button>
+      <p>Welcome {{ user.name }}! - Role : {{ user.role }}</p>
+      <button *ngIf="user.role === userRoles.Admin" class="user-admin" (click)="goToAdminorGoBack()"> {{ isOnAdminDashboard ? 'Go to Dashboard' : 'Go to Admin Dashboard' }}</button>
       <button  class="log-out" (click)="logOut()">Log out</button>
     </ng-container>
   </div>

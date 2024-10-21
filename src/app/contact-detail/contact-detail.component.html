@@ -10,8 +10,10 @@
     </div>
 
     <div class="firstName_input">
+      <div class="emailInline">
       <label for="firstName">First Name: </label>
       <input id="firstName" formControlName="firstName" type="text" [class.error-border]="firstName.invalid && firstName.touched"/>
+    </div>
       <div *ngIf="firstName?.invalid && firstName?.touched"
         class="error-container">
         <small *ngIf="firstName?.errors?.['required']">FirstName is required</small>
@@ -75,11 +77,11 @@
     </div>
 
     <div class="button-actions">
-      <button class="button-edit" *ngIf="!isEditing && contactId" type="button" (click)="enableForm()">Edit</button>
-      <button class="button-edit" *ngIf="!isEditing && contactId" type="button" (click)="deleteContact()">Delete</button>
-      <button class="button-edit" *ngIf="!contactId || isEditing"type="submit" [disabled]="contactForm.invalid">Save</button>
-      <button class="button-edit" *ngIf="isEditing" type="button" (click)="cancelEdit()">Cancel</button>
-      <button class="button-edit" *ngIf="!isEditing" type="button" (click)="goBackToHome()">Go back to Contacts List</button>
+      <button class="button" *ngIf="(!isEditing && contactId) && (this.user$ | async)?.role === userRoleEnum.Admin" type="button" (click)="enableForm()">Edit</button>
+      <button class="button" *ngIf="(!isEditing && contactId) && (this.user$ | async)?.role === userRoleEnum.Admin" type="button" (click)="deleteContact()">Delete</button>
+      <button class="button" *ngIf="!contactId || isEditing && (this.user$ | async)?.role === userRoleEnum.Admin" type="submit" [disabled]="contactForm.invalid">Save</button>
+      <button class="button" *ngIf="isEditing && (this.user$ | async)?.role === userRoleEnum.Admin" type="button" (click)="cancelEdit()">Cancel</button>
+      <button class="button" *ngIf="!isEditing" type="button" (click)="goBackToHome()">Go back to Contacts List</button>
     </div>
   </form>
 </div>

@@ -5,7 +5,10 @@ import { ContactService } from 'app/services/contact.service';
 import { ContactItemComponent } from "../contact-item/contact-item.component";
 import { Router } from '@angular/router';
 import { CategoryService } from 'app/services/category.service';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
+import { ILoginResponse } from '@dm/ILogin-response.model';
+import { AuthService } from 'app/services/auth.service';
+import { UserRole } from '@dm/roleEnum.enum';
 
 @Component({
   selector: 'app-home',
@@ -20,13 +23,19 @@ export class HomeComponent implements OnInit {
   filteredContacts: IContactListItem[] = [];
   selectedLetter: string | null = null;
 
+  user$: Observable<ILoginResponse | null>;
+
+  userRoles = UserRole;
+
   alphabet: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
   constructor(private contactSrc : ContactService,
               private router : Router,
-              private categorySrc : CategoryService
-  ){
+              private categorySrc : CategoryService,
+              private authService: AuthService
 
+  ){
+    this.user$ = this.authService.user$;
   }
 
   ngOnInit(){

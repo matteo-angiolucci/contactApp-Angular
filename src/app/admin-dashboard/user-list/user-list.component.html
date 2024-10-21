@@ -1,0 +1,11 @@
+<ng-container *ngFor="let user of users">
+  <div class="user-container">
+    <div class="text-cotainer">
+      USER :{{ user.email }} - ROLE : {{ user.role }}
+    </div>
+    <div class="container-button-toggle">
+      <div class="circle" [ngClass]="user.active ? 'button-red' : 'button-green'"
+        (click)="onToggleUserStatus(user , !user.active)"></div>
+    </div>
+  </div>
+</ng-container>

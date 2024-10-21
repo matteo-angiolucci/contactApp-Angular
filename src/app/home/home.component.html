@@ -9,7 +9,7 @@
 </div>
 
 <div class="action-buttons">
-  <button class="add-action" (click)="addNewContact()">Add new contact</button>
+  <button *ngIf="(user$ | async)?.role === userRoles.Admin" class="add-action" (click)="addNewContact()">Add new contact</button>
 
 </div>
 
