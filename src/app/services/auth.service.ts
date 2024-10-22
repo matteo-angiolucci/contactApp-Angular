@@ -6,6 +6,7 @@ import { IRegisterModel } from '@dm/register.model';
 import { UserRole } from '@dm/roleEnum.enum';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, map, Observable } from 'rxjs';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,9 @@ export class AuthService {
 
   private apiUrl = environment.GENERAL_SERVICE_ENDPOINT;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private localStorageService : LocalStorageService) {
+    this.loadUserFromLocalStorage();
+   }
 
 
   login(paylaod : ILoginModel): Observable<ILoginResponse> {
@@ -53,6 +56,26 @@ export class AuthService {
     return this.user$.pipe(
       map(value => value?.name)
     )
+  }
+
+
+  // AuthService
+isLoggedInLocalStorageInfo(): boolean {
+  const user = JSON.parse(this.localStorageService.getItem('currentUser')!);
+  if (user) {
+    return true;
+  } else {
+    this.localStorageService.removeItem('currentUser');
+    return false;
+  }
+}
+
+  // Populate the subject with user data from localStorage (on service initialization)
+  private loadUserFromLocalStorage(): void {
+    const user = JSON.parse(this.localStorageService.getItem('currentUser')!);
+    if (user) {
+      this.userSubjectlogged.next(user);  // Set BehaviorSubject with stored user
+    }
   }
 
 

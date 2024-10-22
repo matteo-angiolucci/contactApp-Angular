@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ILoginResponse } from '@dm/ILogin-response.model';
 import { UserRole } from '@dm/roleEnum.enum';
 import { AuthService } from 'app/services/auth.service';
+import { LocalStorageService } from 'app/services/local-storage.service';
 import { UserService } from 'app/services/user.service';
 import { Observable } from 'rxjs';
 
@@ -20,7 +21,7 @@ export class HeaderContactComponent implements OnInit{
   isOnAdminDashboard = false;
   userRoles = UserRole;
 
-  constructor(private authService: AuthService, private route: Router , private userService : UserService) {
+  constructor(private authService: AuthService, private route: Router , private userService : UserService,private localStorageService: LocalStorageService) {
     this.user$ = this.authService.user$;
   }
 
@@ -36,7 +37,7 @@ export class HeaderContactComponent implements OnInit{
   }
 
   logOut() {
-    localStorage.removeItem('currentUser'); // Clear user data from localStorage
+    this.localStorageService.removeItem('currentUser');
     this.route.navigate(['/login']);
     this.authService.unsetUser();
   }

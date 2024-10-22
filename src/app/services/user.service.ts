@@ -12,7 +12,6 @@ export class UserService {
 
   // BehaviorSubject to hold whether the user is on the Admin Dashboard or not
   private isOnAdminDashboardSubject = new BehaviorSubject<boolean>(false);
-
   // Expose the subject as an observable
   isOnAdminDashboard$ = this.isOnAdminDashboardSubject.asObservable();
 
@@ -26,6 +25,10 @@ export class UserService {
 
   updateUserStatus(loggedUser: IUser , user: IUser, status: boolean): Observable<IUser[]> {
     return this.http.patch<IUser[]>(`${this.apiUrl}/activeDeactive`, { loggedUser , user , active: status });
+}
+
+changePassword(userId: string, currentPassword: string, newPassword: string): Observable<IUser[]> {
+  return this.http.patch<IUser[]>(`${this.apiUrl}/${userId}/change-password`, { currentPassword, newPassword });
 }
   // Method to update the subject when navigating to/from Admin Dashboard
   setAdminDashboardState(isOnAdminDashboard: boolean) {
