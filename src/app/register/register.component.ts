@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IRegisterModel } from '@dm/register.model';
-import { UserRole } from '@dm/roleEnum.enum';
 import { AuthService } from 'app/services/auth.service';
 import { ageValidator } from 'app/utility/valiadators/age_validator';
 import { passwordMatchValidator } from 'app/utility/valiadators/password_match_validator';
@@ -71,7 +70,7 @@ export class RegisterComponent {
       dateOfBirth: registerForm.dateOfBirth
         ? new Date(registerForm.dateOfBirth)
         : new Date(),
-      role: UserRole.User,
+      role: 'User',
       active : true
 
     };

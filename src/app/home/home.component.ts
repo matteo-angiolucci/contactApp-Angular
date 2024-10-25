@@ -7,15 +7,15 @@ import { CategoryService } from 'app/services/category.service';
 import { combineLatest, map, Observable, of } from 'rxjs';
 import { ILoginResponse } from '@dm/ILogin-response.model';
 import { AuthService } from 'app/services/auth.service';
-import { UserRole } from '@dm/roleEnum.enum';
 import { ContactDetailComponent } from "../contact-detail/contact-detail.component";
 import { IContactDetails } from '@dm/contact-details.model';
 import { ICategory } from '@dm/category.model';
+import { AuthDirective } from 'app/utility/directives/auth.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ContactItemComponent, ContactDetailComponent],
+  imports: [CommonModule, ContactItemComponent, ContactDetailComponent, AuthDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.less',
 })
@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit {
   categories$: Observable<ICategory[]>;
 
   selectedLetter$: Observable<string>;
-  userRoles = UserRole;
 
   alphabet: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 

@@ -9,8 +9,7 @@
 </div>
 
 <div class="action-buttons">
-
-  <button *ngIf="(user$ | async)?.role === userRoles.Admin" class="add-action" (click)="addNewContact()" [disabled]="( isOpenForm$ | async)" >Add new contact</button>
+    <button *appAuth="['Admin']" class="add-action" (click)="addNewContact()" [disabled]="( isOpenForm$ | async)">Add new contact</button>
   <select (change)="onCategoryChange($event)">
     <option value="">All Categories</option>
     <option *ngFor="let category of (categories$ | async)" [value]="category.id">

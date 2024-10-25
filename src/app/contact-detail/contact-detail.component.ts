@@ -10,16 +10,16 @@ import {
 } from '@angular/forms';
 import { IContactDetails } from '@dm/contact-details.model';
 import { ILoginResponse } from '@dm/ILogin-response.model';
-import { UserRole } from '@dm/roleEnum.enum';
 import { AuthService } from 'app/services/auth.service';
 import { CategoryService } from 'app/services/category.service';
 import { ContactService } from 'app/services/contact.service';
+import { AuthDirective } from 'app/utility/directives/auth.directive';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-contact-detail',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, AuthDirective],
   templateUrl: './contact-detail.component.html',
   styleUrl: './contact-detail.component.less',
 })
@@ -34,7 +34,7 @@ export class ContactDetailComponent implements OnInit, OnDestroy {
 
   contactId: number | null = null;
 
-  userRoleEnum = UserRole;
+  //userRoleEnum = UserRole;
 
   isLoading = false;
 
@@ -76,9 +76,9 @@ export class ContactDetailComponent implements OnInit, OnDestroy {
       });
 
       // Subscribe to form value changes to listen to those changes
-    this.contactForm.valueChanges.subscribe((formValues) => {
-      console.log(formValues);
-    });
+  //   this.contactForm.valueChanges.subscribe((formValues) => {
+  //     console.log(formValues);
+  //   });
   }
 
 

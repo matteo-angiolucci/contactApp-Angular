@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IContactDetails } from '@dm/contact-details.model';
 import { IContactListItem } from '@dm/contact-list-item.model';
 import { ContactService } from 'app/services/contact.service';
+import { AuthDirective } from 'app/utility/directives/auth.directive';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-contact-item',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, AuthDirective],
   templateUrl: './contact-item.component.html',
   styleUrl: './contact-item.component.less',
 })

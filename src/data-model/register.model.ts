@@ -1,4 +1,4 @@
-import { UserRole } from "./roleEnum.enum";
+import { UserRole } from "./roles";
 
 export interface IRegisterModel{
   name: string,

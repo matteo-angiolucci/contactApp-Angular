@@ -13,6 +13,7 @@
   </div>
   <div class="button-container">
     <button (click)="openEditForm(contact)" [disabled]="( isFormOpen$ | async)">Go To Details</button>
-    <button (click)="deleteContact()" [disabled]="( isFormOpen$ | async)">Delete</button>
+      <button *appAuth="['Admin']" (click)="deleteContact()" [disabled]="( isFormOpen$ | async)">Delete</button>
+
   </div>
 </div>
