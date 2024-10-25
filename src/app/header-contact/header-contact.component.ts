@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-header-contact',
   standalone: true,
-  imports: [CommonModule, AsyncPipe,AuthDirective],
+  imports: [CommonModule, AsyncPipe, AuthDirective],
   templateUrl: './header-contact.component.html',
   styleUrl: './header-contact.component.less',
 })

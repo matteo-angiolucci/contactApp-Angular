@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
       this.categoryService.selectedCategory$
     ]).pipe(
       // Combine contacts and categories to add category names
-      map(([contacts, categories, selectedLetter,selectedCategory]) => {
+      map(([contacts, categories, selectedLetter, selectedCategory]) => {
         let combinedContacts = contacts.map((contact) => {
           const category = categories.find(
             (cat) => cat.id === contact.categoryId,
@@ -101,9 +101,7 @@ export class HomeComponent implements OnInit {
 
   onCategoryChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-
     const categoryId = selectedValue ? Number(selectedValue) : null;
-
     this.categoryService.setSelectedCategory(categoryId);
   }
 }

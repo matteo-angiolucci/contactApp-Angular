@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ILoginResponse } from '@dm/ILogin-response.model';
 import { ILoginModel } from '@dm/login.model';
 import { IRegisterModel } from '@dm/register.model';
@@ -17,6 +17,11 @@ export class AuthService {
   user$ = this.userSubjectlogged.asObservable();
 
   private apiUrl = environment.GENERAL_SERVICE_ENDPOINT;
+
+
+  // try tp use a signal to store the logged user Role
+
+  userRoleSignal = signal<UserRole>('User');
 
   constructor(private http: HttpClient, private localStorageService : LocalStorageService) {
     //this.loadUserFromLocalStorage();
@@ -58,6 +63,10 @@ export class AuthService {
     )
   }
 
+    // Function use to set the signal
+    setUserRole(role: UserRole) {
+      this.userRoleSignal.set(role);
+    }
 
   // AuthService
 // isLoggedInLocalStorageInfo(): boolean {

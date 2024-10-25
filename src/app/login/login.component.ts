@@ -57,6 +57,7 @@ export class LoginComponent {
 
           localStorage.setItem('currentUser', JSON.stringify({ ...response}));
           this.authService.setUser(response);
+          this.authService.setUserRole(response.role);
           this.route.navigate(['/home']);
         },
         error: (errorResponse) => {
