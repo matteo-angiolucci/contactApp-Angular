@@ -1,5 +1,5 @@
 <div class="container">
-  <p class="bold title"> {{ isOnAdminDashboard ? 'ADMIN PAGE ':'Contact App List' }}</p>
+  <p class="bold title"> {{ isOnAdminDashboard ? 'ADMIN PAGE ':'CONTACT LIST' }}</p>
   <div class="action-container">
     <ng-container *ngIf="(user$ | async) as user">
       <p>Welcome {{ user.name }}! - Role : {{ user.role }}</p>

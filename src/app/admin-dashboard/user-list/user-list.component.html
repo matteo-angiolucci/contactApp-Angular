@@ -1,17 +1,20 @@
-<ng-container class="container" *ngFor="let user of users">
-  <div class="user-container">
-    <div class="text-container">
-      USER: {{ user.email }} - ROLE: {{ user.role }}
+
+<div class="card-list">
+  <div *ngFor="let user of users" class="card">
+    <div class="info-content">
+    <h3>{{ user.email }} - {{user.role}}</h3>
     </div>
-    <div class="container-button-toggle">
-      <div class="circle" [ngClass]="user.active ? 'button-red' : 'button-green'"
-        (click)="onToggleUserStatus(user, !user.active)"></div>
+    <div class="button-group">
+      <div class="circle" [ngClass]="user.active ? 'button-green' : 'button-red'"
+      (click)="onToggleUserStatus(user, !user.active)">
+    </div>
+    <div class="container-status-text">
+      {{ getStatus(user) }}
     </div>
     <button (click)="openChangePasswordModal(user)">Change Password</button>
+    </div>
   </div>
-</ng-container>
-
+</div>
 <!-- Modal for changing password -->
-<app-change-password-modal *ngIf="isModalOpen"
-                           [user]="currentSelectedUser"
-                           (closeModalE)="closePasswordModal()"></app-change-password-modal>
+<app-change-password-modal *ngIf="isModalOpen" [user]="currentSelectedUser"
+  (closeModalE)="closePasswordModal()"></app-change-password-modal>

@@ -2,21 +2,21 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export function passwordMatchValidator(password: string, confirmPassword: string): ValidatorFn {
   return (formGroup: AbstractControl): ValidationErrors | null => {
-    const passwordControl = formGroup.get(password);
-    const confirmPasswordControl = formGroup.get(confirmPassword);
+    const password2 = formGroup.get(password);
+    const password1 = formGroup.get(confirmPassword);
 
-    if (!passwordControl || !confirmPasswordControl) {
+    if (!password2 || !password1) {
       return null;
     }
 
-    const passwordsMatch = passwordControl.value === confirmPasswordControl.value;
+    const passwordsMatch = password2.value === password1.value;
 
     // If passwords do not match, return an error object
     if (!passwordsMatch) {
-      confirmPasswordControl.setErrors({ passwordMismatch: true });
+      password1.setErrors({ passwordMismatch: true });
     } else {
       // If passwords match, clear any existing errors
-      confirmPasswordControl.setErrors(null);
+      password1.setErrors(null);
     }
 
     return null;

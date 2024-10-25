@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IUser } from '@dm/user.mode';
+import { passwordChangeApiReturn } from '@dm/passwordChange-API.model';
+import { IUser } from '@dm/user.model';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private apiUrl = environment.USERS_SERVICE_ENDPOINT;
@@ -15,21 +16,35 @@ export class UserService {
   // Expose the subject as an observable
   isOnAdminDashboard$ = this.isOnAdminDashboardSubject.asObservable();
 
-
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<IUser[]> {
     return this.http.get<IUser[]>(`${this.apiUrl}/list`);
   }
 
+  updateUserStatus(
+    loggedUser: IUser,
+    user: IUser,
+    status: boolean,
+  ): Observable<IUser[]> {
+    return this.http.patch<IUser[]>(`${this.apiUrl}/activeDeactive`, {
+      loggedUser,
+      user,
+      active: status,
+    });
+  }
 
-  updateUserStatus(loggedUser: IUser , user: IUser, status: boolean): Observable<IUser[]> {
-    return this.http.patch<IUser[]>(`${this.apiUrl}/activeDeactive`, { loggedUser , user , active: status });
-}
+  changePassword(
+    user: IUser,
+    loggedUser: IUser,
+    newPassword: string,
+  ): Observable<passwordChangeApiReturn> {
+    return this.http.patch<passwordChangeApiReturn>(
+      `${this.apiUrl}/changePassword`,
+      { user, loggedUser , newPassword},
+    );
+  }
 
-changePassword(userId: string, currentPassword: string, newPassword: string): Observable<IUser[]> {
-  return this.http.patch<IUser[]>(`${this.apiUrl}/${userId}/change-password`, { currentPassword, newPassword });
-}
   // Method to update the subject when navigating to/from Admin Dashboard
   setAdminDashboardState(isOnAdminDashboard: boolean) {
     this.isOnAdminDashboardSubject.next(isOnAdminDashboard);

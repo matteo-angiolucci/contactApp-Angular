@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ICategory } from '@dm/category.model';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
+
+  private selectedCategorySubject = new BehaviorSubject<number | null>(null);
+  selectedCategory$ = this.selectedCategorySubject.asObservable();
+
+
   private categories: ICategory[] = [
     { id: 1, name: 'Home' },
     { id: 2, name: 'Work' },
@@ -19,5 +24,9 @@ export class CategoryService {
    return of(this.categories)
   }
 
+
+  setSelectedCategory(id : number | null){
+    this.selectedCategorySubject.next(id);
+  }
 
 }

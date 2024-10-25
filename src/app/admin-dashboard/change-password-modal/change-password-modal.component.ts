@@ -7,7 +7,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IUser } from '@dm/user.mode';
+import { passwordChangeApiReturn } from '@dm/passwordChange-API.model';
+import { IUser } from '@dm/user.model';
+import { LocalStorageService } from 'app/services/local-storage.service';
 import { UserService } from 'app/services/user.service';
 import { passwordMatchValidator } from 'app/utility/valiadators/password_match_validator';
 
@@ -24,6 +26,7 @@ export class ChangePasswordModalComponent implements OnInit {
   isOpen = false;
 
   @Output() closeModalE = new EventEmitter<void>();
+  outputMessage = '';
 
   changePasswordForm = new FormGroup(
     {
@@ -36,8 +39,7 @@ export class ChangePasswordModalComponent implements OnInit {
     },
   );
 
-  constructor(
-    private userService: UserService) {}
+  constructor(private userService: UserService, private localStorageService : LocalStorageService) {}
 
   ngOnInit(): void {
     this.loadPassword();
@@ -45,18 +47,23 @@ export class ChangePasswordModalComponent implements OnInit {
 
   onSubmit() {
     if (this.changePasswordForm.valid) {
-     console.log(this.changePasswordForm.value);
-      const currentPassword = this.currentPassword.value
-      const newPassword  = this.newPassword.value
-      if (currentPassword && newPassword && this.user) {
+      const currentuserString = this.localStorageService.getItem('currentUser');
+      const currentUser: IUser = currentuserString
+      ? JSON.parse(currentuserString)
+      : null;
+      const currentPassword = this.currentPassword.value;
+      const newPassword = this.newPassword.value;
+      if (currentPassword && newPassword && this.user && currentUser) {
         this.userService
-          .changePassword(this.user.id!, currentPassword, newPassword)
+          .changePassword(this.user, currentUser, newPassword)
           .subscribe({
-            next: (data) => {
-              console.log(data);
+            next: (data : passwordChangeApiReturn) => {
+              this.outputMessage = data.outputmessage;
+
             },
             error: (errorResponse) => {
               console.error(errorResponse);
+              this.outputMessage = errorResponse.error.message;
             },
           });
       }
@@ -78,31 +85,27 @@ export class ChangePasswordModalComponent implements OnInit {
   }
 
   onClose() {
-    console.log("clciked on close button")
+    console.log('clciked on close button');
     this.closeModalE.emit();
   }
 
-
-
   loadPassword() {
     this.changePasswordForm.patchValue({
-      currentPassword: this.user.id,
+      currentPassword: this.user.password,
     });
   }
 
   // create a function inside to equalValues can be applied to any and it can check 2 distinctive values
 
-
-  equalValues(controlName1 : string, controlName2 : string){
+  equalValues(controlName1: string, controlName2: string) {
     return (control: AbstractControl) => {
       const val1 = control.get(controlName1)?.value;
-      const val2 = control.get(controlName2)?.value
+      const val2 = control.get(controlName2)?.value;
 
-      if(val1 === val2){
+      if (val1 === val2) {
         return null;
       }
-      return { valuesNotEqual : true };
-    }
-
+      return { valuesNotEqual: true };
+    };
   }
 }

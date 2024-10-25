@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IUser } from '@dm/user.mode';
+import { IUser } from '@dm/user.model';
 import { AuthService } from 'app/services/auth.service';
 import { LocalStorageService } from 'app/services/local-storage.service';
 import { UserService } from 'app/services/user.service';
@@ -67,5 +67,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Set the state to false when leaving the Admin Dashboard
     this.userSerivce.setAdminDashboardState(false);
+  }
+
+  getStatus(user : IUser): string  {
+    return user.active ? 'Lock' : 'Unlock'
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -8,14 +8,13 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { ActivatedRoute, Router  } from '@angular/router';
 import { IContactDetails } from '@dm/contact-details.model';
 import { ILoginResponse } from '@dm/ILogin-response.model';
 import { UserRole } from '@dm/roleEnum.enum';
 import { AuthService } from 'app/services/auth.service';
 import { CategoryService } from 'app/services/category.service';
 import { ContactService } from 'app/services/contact.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-contact-detail',
@@ -24,10 +23,11 @@ import { Observable } from 'rxjs';
   templateUrl: './contact-detail.component.html',
   styleUrl: './contact-detail.component.less',
 })
-export class ContactDetailComponent implements OnInit {
+export class ContactDetailComponent implements OnInit, OnDestroy {
 
   user$: Observable<ILoginResponse | null>;
-
+  selectedContact$: Observable<IContactDetails | undefined>;
+  private destroy$ = new Subject<void>();
   isEditing = false;
 
   initialData!: IContactDetails;
@@ -35,6 +35,8 @@ export class ContactDetailComponent implements OnInit {
   contactId: number | null = null;
 
   userRoleEnum = UserRole;
+
+  isLoading = false;
 
   contactForm = new FormGroup({
     firstName: new FormControl('', [
@@ -51,28 +53,39 @@ export class ContactDetailComponent implements OnInit {
       Validators.minLength(3),
     ]),
     alias: new FormControl('', [Validators.required]),
-    categoryId : new FormControl('', Validators.required),
-    id: new FormControl(),
+    categoryId: new FormControl('', Validators.required),
   });
 
   constructor(
-    private contactSrv: ContactService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    public categoriesService : CategoryService,
-    private authService : AuthService
+    private contactService: ContactService,
+    public categoriesService: CategoryService,
+    private authService: AuthService,
   ) {
-    this.user$ = this.authService.user$
+    this.user$ = this.authService.user$;
+    this.selectedContact$ = this.contactService.selectedContact$;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.contactId = params['id'] ? params['id'] : null;
-      if (this.contactId) {
-        this.loadContact(this.contactId);
-        this.disableForm();
-      }
+    this.contactService.selectedContact$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((contact) => {
+        if (contact?.id !== undefined && contact.id !== -1) {
+          this.contactId = contact.id;
+          this.loadContact(this.contactId);
+        }
+      });
+
+      // Subscribe to form value changes to listen to those changes
+    this.contactForm.valueChanges.subscribe((formValues) => {
+      console.log(formValues);
     });
+  }
+
+
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   //valditore numero telefono XXX-XXXXX
@@ -83,7 +96,7 @@ export class ContactDetailComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.contactForm.valid) {
+    if (!this.contactForm.invalid) {
       const formValues = this.contactForm.value;
 
       const contactData: IContactDetails = {
@@ -92,112 +105,98 @@ export class ContactDetailComponent implements OnInit {
         email: formValues.email || '',
         phoneNo: formValues.phoneNo || '',
         alias: formValues.alias || '',
-        id : this.contactId || undefined,
-        categoryId : Number(formValues.categoryId) || 1
+        id: this.contactId || undefined,
+        categoryId: Number(formValues.categoryId) || 1,
       };
-      if (!this.isEditing) {
-        this.contactSrv.createContact(contactData).subscribe(
+      if (this.isEditing === false) {
+        this.contactService.createContact(contactData).subscribe(
           (response) => {
-            this.router.navigate([], {
-              queryParams: { id: response.id },
-              queryParamsHandling: 'merge',
-            });
-            this.disableForm();
-            this.isEditing = false;
+            console.log(response);
           },
           (error) => {
             console.error('Error submitting form:', error);
           },
         );
       } else {
-        this.contactSrv.updateContact(contactData).subscribe(
+        this.contactService.updateContact(contactData).subscribe(
           () => {
-            this.disableForm();
             this.isEditing = false;
+            //this.contactService.updateContact(contactData);
           },
           (error) => {
             console.error('Error Updating form:', error);
-            this.disableForm();
-
           },
         );
       }
-    } else {
-      console.log('Form is invalid');
     }
   }
 
-  loadContact(id: number): void {
-    this.contactSrv.getContact(id).subscribe((contact: IContactDetails) => {
+  loadContact(contactId: number): void {
+    this.contactService
+      .getContact(contactId)
+      .subscribe((contact: IContactDetails) => {
+        this.contactForm.patchValue({
+          firstName: contact.firstName,
+          lastName: contact.lastName,
+          email: contact.email,
+          phoneNo: contact.phoneNo,
+          alias: contact.alias,
+          categoryId: contact.categoryId.toString(),
+        });
+        this.initialData = contact;
+        this.isLoading = false;
+        this.isEditing = true;
+      });
+  }
+
+  resetValues() {
+    if(this.isEditing){
       this.contactForm.patchValue({
-        firstName: contact.firstName,
-        lastName: contact.lastName,
-        email: contact.email,
-        phoneNo: contact.phoneNo,
-        alias: contact.alias,
-        categoryId: contact.categoryId.toString()
+        firstName: this.initialData.firstName,
+        lastName: this.initialData.lastName,
+        email: this.initialData.email,
+        phoneNo: this.initialData.phoneNo,
+        alias: this.initialData.alias,
+        categoryId: this.initialData.categoryId.toString(),
       });
-      this.isEditing = false;
-      this.initialData = contact;
-    });
-  }
-
-  deleteContact(): void {
-    if (this.contactId) {
-      this.contactSrv.deleteContact(this.contactId).subscribe(() => {
-        this.router.navigate(['/home']);
+    } else{
+      this.contactForm.reset({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNo: '',
+        alias: '',
+        categoryId: '',
       });
     }
   }
 
-  private disableForm(): void {
-    this.contactForm.disable();
+  closePopUp() {
+    this.contactService.setSelectedContact(undefined);
+    this.contactService.setVisibilityForms(false);
   }
 
-  enableForm(): void {
-    this.contactForm.enable();
-    this.isEditing = true;
-  }
-
-  cancelEdit(): void {
-    this.contactForm.patchValue({
-      firstName: this.initialData.firstName,
-      lastName: this.initialData.lastName,
-      email: this.initialData.email,
-      phoneNo: this.initialData.phoneNo,
-      alias: this.initialData.alias,
-      categoryId: this.initialData.categoryId.toString()
-    });
-    this.disableForm();
-    this.isEditing = false;
-  }
-
-  goBackToHome() {
-    this.router.navigate(['/home']);
-  }
-
-  get firstName(){
+  get firstName() {
     return this.contactForm.controls.firstName;
   }
 
-  get email(){
+  get email() {
     return this.contactForm.controls.email;
   }
 
-  get alias(){
+  get alias() {
     return this.contactForm.controls.alias;
   }
 
-  get lastName(){
+  get lastName() {
     return this.contactForm.controls.lastName;
   }
 
-  get phoneNo(){
+  get phoneNo() {
     return this.contactForm.controls.phoneNo;
   }
 
-  get category(){
+  get category() {
     return this.contactForm.controls.categoryId;
   }
-
 }

@@ -1,4 +1,4 @@
-<div class="contact-item">
+<div class="contact-item" [ngClass]="{'selected': (selectedContact$ | async)?.id === contact.id}">
   <!-- <div class="id-container">
     <strong> Id: </strong> {{ contact.id }}
   </div> -->
@@ -12,6 +12,7 @@
     <strong> Category: </strong> {{ contact.categoryName }}
   </div>
   <div class="button-container">
-    <button [routerLink]="['/contact-details']" [queryParams]="{ id: contact.id }">Go To Details</button>
+    <button (click)="openEditForm(contact)" [disabled]="( isFormOpen$ | async)">Go To Details</button>
+    <button (click)="deleteContact()" [disabled]="( isFormOpen$ | async)">Delete</button>
   </div>
 </div>

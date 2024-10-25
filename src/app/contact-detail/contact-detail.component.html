@@ -1,19 +1,15 @@
-<div class="container-form">
-
-
-
+<div *ngIf="isLoading">Loading...</div>
+<div class="container-form" *ngIf="!isLoading">
   <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
 
     <div class="title">
-      <h1 *ngIf="!this.contactId">New Contact</h1>
-      <h1 *ngIf="this.contactId"> Edit or delete the current contact</h1>
+      <h1 *ngIf="(selectedContact$ | async)?.id === -1">New Contact</h1>
+      <h1 *ngIf="(selectedContact$ | async)?.id !== -1">Edit current contact</h1>
     </div>
 
     <div class="firstName_input">
-      <div class="emailInline">
       <label for="firstName">First Name: </label>
       <input id="firstName" formControlName="firstName" type="text" [class.error-border]="firstName.invalid && firstName.touched"/>
-    </div>
       <div *ngIf="firstName?.invalid && firstName?.touched"
         class="error-container">
         <small *ngIf="firstName?.errors?.['required']">FirstName is required</small>
@@ -27,27 +23,25 @@
     <div class="email_input">
       <label for="email">Email: </label>
       <input id="email" formControlName="email" type="email" />
-      <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="error-container">
-        <small *ngIf="contactForm.get('email')?.errors?.['email']">Enter a valid email</small>
+      <div *ngIf="email?.invalid && email?.touched" class="error-container">
+        <small *ngIf="email?.errors?.['email']">Enter a valid email</small>
       </div>
     </div>
 
     <div class="alias_input">
       <label for="alias">Alias: </label>
       <input id="alias" formControlName="alias" type="text" [class.error-border]="alias.invalid && alias.touched"/>
-      <div *ngIf="contactForm.get('alias')?.invalid && contactForm.get('alias')?.touched" class="error-container">
-        <small *ngIf="contactForm.get('alias')?.errors?.['required']">Alias is required</small>
+      <div *ngIf="alias?.invalid && alias?.touched" class="error-container">
+        <small *ngIf="alias?.errors?.['required']">Alias is required</small>
       </div>
     </div>
 
     <div class="lastName_input">
       <label for="lastName">Last Name: </label>
       <input id="lastName" formControlName="lastName" type="text" [class.error-border]="lastName.invalid && lastName.touched"/>
-      <div *ngIf="contactForm.get('lastName')?.invalid && contactForm.get('lastName')?.touched" class="error-container">
-        <small *ngIf="contactForm.get('lastName')?.errors?.['required']">LastName is required</small>
-        <small *ngIf="contactForm.get('lastName')?.errors?.['minlength']">
-          Last name must be at least 3 characters long
-        </small>
+      <div *ngIf="lastName?.invalid && lastName.touched" class="error-container">
+        <small *ngIf="lastName?.errors?.['required']">LastName is required</small>
+        <small *ngIf="lastName?.errors?.['minlength']">Last name must be at least 3 characters long</small>
       </div>
     </div>
 
@@ -55,9 +49,9 @@
     <div class="phone_input">
       <label for="phone">Phone Number (XXX-XXXXXX): </label>
       <input id="phoneNo" formControlName="phoneNo" type="text" [class.error-border]="phoneNo.invalid && phoneNo.touched" />
-      <div *ngIf="contactForm.get('phoneNo')?.invalid && contactForm.get('phoneNo')?.touched" class="error-container">
-        <small *ngIf="contactForm.get('phoneNo')?.errors?.['required']">Phone number is required</small>
-        <small *ngIf="contactForm.get('phoneNo')?.errors?.['phoneFormat']">
+      <div *ngIf="phoneNo?.invalid && phoneNo?.touched" class="error-container">
+        <small *ngIf="phoneNo?.errors?.['required']">Phone number is required</small>
+        <small *ngIf="phoneNo?.errors?.['phoneFormat']">
           Phone number must be in the format XXX-XXXXXX
         </small>
       </div>
@@ -70,18 +64,16 @@
           {{ category.name }}
         </option>
       </select>
-      <div *ngIf="contactForm.get('categoryId')?.invalid && contactForm.get('categoryId')?.touched" class="error-container">
-        <small *ngIf="contactForm.get('categoryId')?.errors?.['required']">Category field is required</small>
+      <div *ngIf="category?.invalid && category?.touched" class="error-container">
+        <small *ngIf="category?.errors?.['required']">Category field is required</small>
 
       </div>
     </div>
 
     <div class="button-actions">
-      <button class="button" *ngIf="(!isEditing && contactId) && (this.user$ | async)?.role === userRoleEnum.Admin" type="button" (click)="enableForm()">Edit</button>
-      <button class="button" *ngIf="(!isEditing && contactId) && (this.user$ | async)?.role === userRoleEnum.Admin" type="button" (click)="deleteContact()">Delete</button>
-      <button class="button" *ngIf="!contactId || isEditing && (this.user$ | async)?.role === userRoleEnum.Admin" type="submit" [disabled]="contactForm.invalid">Save</button>
-      <button class="button" *ngIf="isEditing && (this.user$ | async)?.role === userRoleEnum.Admin" type="button" (click)="cancelEdit()">Cancel</button>
-      <button class="button" *ngIf="!isEditing" type="button" (click)="goBackToHome()">Go back to Contacts List</button>
+      <button class="button" type="submit" [disabled]="contactForm.invalid">Save</button>
+      <button class="button" type="button" (click)="resetValues()"> {{ isEditing ? 'Revert' : 'Reset' }} </button>
+      <button class="button" type="button" (click)="closePopUp()">Close</button>
     </div>
   </form>
 </div>

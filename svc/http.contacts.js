@@ -192,16 +192,13 @@ main = () => {
     });
 
 
-   // Middleware to check if the user is an admin
+   // middlefunction to check if the user is an admin
 const isAdmin = (req, res, next) => {
-
-
-  // Assuming user information is stored in req.user
-  const user = req.body.loggedUser; // Replace this with your actual user extraction logic
+  const user = req.body.loggedUser;
 
   // Check if the user exists and has the role of 'ADMIN'
   if (user && user.role === 'Admin') {
-      next(); // Proceed to the next middleware/route handler
+      next(); // Proceed to the next route handler
   } else {
       res.status(403).send({ message: "Operation denied. Admins only." }); // Send forbidden status
   }
@@ -209,7 +206,7 @@ const isAdmin = (req, res, next) => {
 
 
 
-  // update a user
+  // update a user active or non active
   app.patch("/api/users/activeDeactive", isAdmin ,async (req, res) => {
     const {loggedUser, user , active } = req.body;
 
@@ -233,6 +230,34 @@ const isAdmin = (req, res, next) => {
 
     res.status(200).send(contentFilter);
   });
+
+
+    // update a user active or non active
+    app.patch(`/api/users/changePassword`, isAdmin ,async (req, res) => {
+      const { user , newPassword } = req.body;
+
+      const payload = req.user;
+
+      const content = await loadContent(usersDB);
+
+      const idx = findIndex(content, user.id);
+
+      if (idx < 0) {
+        res.status(204).send(payload);
+        return;
+      }
+
+
+      if(content[idx].password === newPassword ){
+        res.status(409).send({ outputmessage: "Password is the same as the old one! Change the New password to something different"});
+      }
+
+      content[idx] = { ...content[idx], password: newPassword };
+
+      await saveContent(content, usersDB);
+
+      res.status(200).send({ outputmessage: "Password updated successfully" });
+    });
 
 
   app.listen(9999, () => console.log("API Server listening on port 9999!"));

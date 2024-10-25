@@ -1,31 +1,53 @@
 
-.container{
+.card-list {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
 }
 
-.user-container{
-  background-color: aquamarine;
-  gap:10px;
-  padding: 10px;
-
-  .circle {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-
-  }
-
-
-  .button-green{
-    background-color: green;
-  }
-  .button-red{
-    background-color: red;
-  }
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 300px;
 }
 
 
+.card h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.card p {
+  margin: 0;
+  color: #555;
+}
 
 
+.button-group{
+  display: flex;
+  justify-content: space-around;
+
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+
+
+}
+
+
+.button-green {
+  background-color: green;
+}
+
+.button-red {
+  background-color: red;
+}
+}
 

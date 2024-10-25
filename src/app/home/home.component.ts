@@ -3,78 +3,108 @@ import { CommonModule } from '@angular/common';
 import { IContactListItem } from '@dm/contact-list-item.model';
 import { ContactService } from 'app/services/contact.service';
 import { ContactItemComponent } from "../contact-item/contact-item.component";
-import { Router } from '@angular/router';
 import { CategoryService } from 'app/services/category.service';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, of } from 'rxjs';
 import { ILoginResponse } from '@dm/ILogin-response.model';
 import { AuthService } from 'app/services/auth.service';
 import { UserRole } from '@dm/roleEnum.enum';
+import { ContactDetailComponent } from "../contact-detail/contact-detail.component";
+import { IContactDetails } from '@dm/contact-details.model';
+import { ICategory } from '@dm/category.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ CommonModule, ContactItemComponent],
+  imports: [CommonModule, ContactItemComponent, ContactDetailComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.less',
 })
 export class HomeComponent implements OnInit {
-
-  contacts: IContactListItem[] = [];
-  filteredContacts: IContactListItem[] = [];
-  selectedLetter: string | null = null;
-
   user$: Observable<ILoginResponse | null>;
+  selectedContact$: Observable<IContactDetails | undefined>;
+  isOpenForm$: Observable<boolean>;
+  filteredContacts$: Observable<IContactListItem[]> = of([]);
+  categories$: Observable<ICategory[]>;
 
+  selectedLetter$: Observable<string>;
   userRoles = UserRole;
 
   alphabet: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-  constructor(private contactSrc : ContactService,
-              private router : Router,
-              private categorySrc : CategoryService,
-              private authService: AuthService
-
-  ){
+  constructor(
+    private categoryService: CategoryService,
+    private authService: AuthService,
+    private contactService: ContactService,
+  ) {
     this.user$ = this.authService.user$;
+    this.selectedContact$ = this.contactService.selectedContact$;
+    this.isOpenForm$ = this.contactService.isFormOpen$;
+    this.selectedLetter$ = this.contactService.selectedLetter$;
+    this.categories$ = this.categoryService.getCategories();
   }
 
-  ngOnInit(){
-
-    combineLatest([
-      this.contactSrc.getContacts(),
-      this.categorySrc.getCategories()
+  ngOnInit() {
+    this.filteredContacts$ = combineLatest([
+      this.contactService.contacts$,
+      this.categories$,
+      this.selectedLetter$,
+      this.categoryService.selectedCategory$
     ]).pipe(
-      map(([contacts, categories]) => {
-        // Map over contacts and find corresponding category name
-        return contacts.map(contact => {
-          const category = categories.find(cat => cat.id === contact.categoryId);
+      // Combine contacts and categories to add category names
+      map(([contacts, categories, selectedLetter,selectedCategory]) => {
+        let combinedContacts = contacts.map((contact) => {
+          const category = categories.find(
+            (cat) => cat.id === contact.categoryId,
+          );
           return {
             ...contact,
-            categoryName: category ? category.name : 'Unknown'
+            categoryName: category ? category.name : 'Unknown',
           };
         });
-      })
-    ).subscribe({
-      next: (combinedData) => {
-        this.contacts = combinedData;
-        this.filteredContacts = combinedData;
-      }
-    });
-  }
 
+        // Filter based on selected letter, if provided
+        if (selectedLetter) {
+          combinedContacts = combinedContacts.filter((contact) =>
+            contact.alias.startsWith(selectedLetter),
+          );
+        }
 
-  filterByLetter(letter: string): void {
-    if (this.selectedLetter && letter === this.selectedLetter) {
-      this.filteredContacts = this.contacts;
-      this.selectedLetter = null;
-    } else {
-      this.selectedLetter = letter;
-      this.filteredContacts = this.contacts.filter((contact) =>
-        contact.alias.toUpperCase().startsWith(letter)
+        // Filter based on selected category, if provided
+        if (selectedCategory) {
+          combinedContacts = combinedContacts.filter(
+            (contact) => contact.categoryId === selectedCategory,
+          );
+        }
+
+        return combinedContacts;
+      }),
     );
   }
-}
+
   addNewContact() {
-  this.router.navigate(['/contact-details'])
+    const contactNew: IContactDetails = {
+      alias: '',
+      email: '',
+      lastName: '',
+      firstName: '',
+      birthDate: undefined,
+      phoneNo: '',
+      categoryId: 0,
+      id: -1,
+    };
+    this.contactService.setSelectedContact(contactNew);
+    this.contactService.setVisibilityForms(true);
+  }
+
+  setSelectedLetter(letter: string) {
+    this.contactService.setSelectedLetter(letter);
+  }
+
+  onCategoryChange(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+
+    const categoryId = selectedValue ? Number(selectedValue) : null;
+
+    this.categoryService.setSelectedCategory(categoryId);
   }
 }

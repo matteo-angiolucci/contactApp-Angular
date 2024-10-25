@@ -3,7 +3,6 @@
   justify-content: center;
   padding-top: 10%;
   padding-bottom: 10%;
-  //width: 100%;
 }
 
 form{
@@ -29,8 +28,10 @@ form{
   padding: 20px;
   gap: 10px;
 
-  button.buttont{
+  button.button.delete{
+    background-color: red;
     padding: 5px;
+    color: black;
   }
 }
 
@@ -65,6 +66,14 @@ form{
 
 .category_input{
   padding: 10px;
+}
+
+input{
+  padding: 10px; /* Adds 10px of padding inside the input box */
+  width: 100%;   /* Ensures the input takes up full available width */
+  box-sizing: border-box; /* Ensures padding is included in the total width */
+  border: 1px solid #ccc; /* Adds a border around the input */
+  border-radius: 4px; /* Slightly rounds the corners */
 }
 
 

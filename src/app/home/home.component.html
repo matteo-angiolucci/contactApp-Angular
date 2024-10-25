@@ -2,32 +2,40 @@
 
 <div class="alphabet">
   <div *ngFor="let letter of alphabet"
-      (click)="filterByLetter(letter)"
+      (click)="setSelectedLetter(letter)"
       >
-    <p [ngClass]="{'selected-letter': selectedLetter === letter}" class="letter">{{ letter }}</p>
+    <p [ngClass]="{'selected-letter': (selectedLetter$ | async) === letter}" class="letter">{{ letter }}</p>
   </div>
 </div>
 
 <div class="action-buttons">
-  <button *ngIf="(user$ | async)?.role === userRoles.Admin" class="add-action" (click)="addNewContact()">Add new contact</button>
 
+  <button *ngIf="(user$ | async)?.role === userRoles.Admin" class="add-action" (click)="addNewContact()" [disabled]="( isOpenForm$ | async)" >Add new contact</button>
+  <select (change)="onCategoryChange($event)">
+    <option value="">All Categories</option>
+    <option *ngFor="let category of (categories$ | async)" [value]="category.id">
+      {{ category.name }}
+    </option>
+  </select>
 </div>
-
 <ng-template #contactListTemplate>
   <div class="card-display">
     <app-contact-item
-      *ngFor="let contact of filteredContacts"
+      *ngFor="let contact of filteredContacts$ | async "
       [contact]="contact"
     ></app-contact-item>
   </div>
 </ng-template>
 
-
 <ng-template #noContactsTemplate>
   <div class="no-contacts-message">
-    No contacts found for the letter "{{ selectedLetter }}"
+    No contacts found.
   </div>
 </ng-template>
 
+<!-- Using ngIf and async -->
+<ng-container *ngIf="filteredContacts$ | async as contacts">
+  <div [ngTemplateOutlet]="contacts.length > 0 ? contactListTemplate : noContactsTemplate"></div>
+</ng-container>
 
-<div [ngTemplateOutlet]="filteredContacts.length > 0 ? contactListTemplate : noContactsTemplate"></div>
+<app-contact-detail *ngIf="( selectedContact$ | async)"></app-contact-detail>
