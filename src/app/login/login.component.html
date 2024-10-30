@@ -7,7 +7,7 @@
 
     <div class="email_input">
       <label for="email">Email: </label>
-      <input id="email" formControlName="email" type="email" />
+      <input id="email" formControlName="email" type="email" autocomplete="off"/>
       <div *ngIf="email?.invalid && email?.touched" class="error-container">
         <small *ngIf="email?.errors?.['required']">Email is required</small>
         <small *ngIf="email?.errors?.['email']">Enter a valid email</small>

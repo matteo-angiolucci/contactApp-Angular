@@ -195,6 +195,8 @@ main = () => {
    // middlefunction to check if the user is an admin
 const isAdmin = (req, res, next) => {
   const user = req.body.loggedUser;
+  console.log('[REQ-BODY' , req.body);
+  console.log('[ADMIN-FUNCTION CHECK] ==> ' , user);
 
   // Check if the user exists and has the role of 'ADMIN'
   if (user && user.role === 'Admin') {
@@ -232,18 +234,18 @@ const isAdmin = (req, res, next) => {
   });
 
 
-    // update a user active or non active
+    // change users Password
     app.patch(`/api/users/changePassword`, isAdmin ,async (req, res) => {
       const { user , newPassword } = req.body;
 
-      const payload = req.user;
+      //const payload = user;
 
       const content = await loadContent(usersDB);
 
       const idx = findIndex(content, user.id);
 
       if (idx < 0) {
-        res.status(204).send(payload);
+        res.status(204).send(user);
         return;
       }
 

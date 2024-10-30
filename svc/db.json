@@ -34,5 +34,14 @@
         "alias": "Danny",
         "categoryId": 2,
         "id": "4220998576047976"
-    }
+    },
+    {
+      "firstName": "Fake",
+      "lastName": "Fake",
+      "email": "Fake.Fake@example.com",
+      "phoneNo": "555-123456",
+      "alias": "Fake",
+      "categoryId": 2,
+      "id": "1233456123"
+  }
 ]

@@ -1,75 +1,91 @@
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms'; // Import FormControl and ReactiveFormsModule
 import { IUser } from '@dm/user.model';
 import { AuthService } from 'app/services/auth.service';
-import { LocalStorageService } from 'app/services/local-storage.service';
 import { UserService } from 'app/services/user.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { ChangePasswordModalComponent } from "../change-password-modal/change-password-modal.component";
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, ChangePasswordModalComponent],
+  imports: [CommonModule, ReactiveFormsModule, ChangePasswordModalComponent], // Import ReactiveFormsModule
   templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.less',
+  styleUrls: ['./user-list.component.less'],
 })
-export class UserListComponent implements OnInit, OnDestroy {
-  users: IUser[] = [];
-
-  isModalOpen = false;
-  currentSelectedUser : IUser = {};
+export class UserListComponent implements OnInit {
+  loggedUser: IUser | null = null;
+  users$: Observable<IUser[]> = of([]);
+  filteredUsers$: Observable<IUser[]> = of([]);
+  searchControl = new FormControl(''); // FormControl for the search box
+  isModalOpen$: Observable<boolean> = of(false);
 
   constructor(
-    private userSerivce: UserService,
-    private authService: AuthService,
-    private localStorageService: LocalStorageService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
+
   ngOnInit(): void {
-    this.userSerivce.setAdminDashboardState(true);
-    combineLatest([this.authService.user$ , this.userSerivce.getUsers()])
-    .subscribe({
-      next: ([currentUser , data]) => {
-        this.users = data.filter((user) => user.email !== currentUser?.email); // Filter out the current user
-      },
-    });
+    this.isModalOpen$ = this.userService.openPasswordChangeModal$;
+
+    this.userService.setAdminDashboardState(true);
+
+    // Use combineLatest to filter out the logged-in user from the user list and implement search functionality
+    this.filteredUsers$ = combineLatest([
+      this.authService.userLogged$,
+      this.userService.userList$,
+      this.searchControl.valueChanges.pipe(startWith('')) // Listen to search input changes
+    ]).pipe(
+      map(([loggedUser, users, searchTerm]) => {
+        this.loggedUser = loggedUser;
+
+        // Filter out the logged-in user
+        let filteredUsers = users.filter(user => user.email !== loggedUser?.email);
+
+        // Apply search filter if there's a search term
+        if (searchTerm) {
+          const lowerCaseSearchTerm = searchTerm.toLowerCase();
+          filteredUsers = filteredUsers.filter(user =>
+            user.email?.toLowerCase().includes(lowerCaseSearchTerm)
+          );
+        }
+
+        return filteredUsers;
+      })
+    );
+  }
+
+  // Method to clear the search input
+  clearSearch(): void {
+    this.searchControl.setValue('');
   }
 
   onToggleUserStatus(user: IUser, newStatus: boolean) {
-    const currentuserString = this.localStorageService.getItem('currentUser');
-    const currentUser: IUser = currentuserString
-    ? JSON.parse(currentuserString)
-    : null;
-    if (currentUser) {
-      this.userSerivce
-      .updateUserStatus(currentUser, user, newStatus)
-      .subscribe({
+    if (this.loggedUser) {
+      this.userService.updateUserStatus(this.loggedUser, user, newStatus).subscribe({
         next: (response) => {
-          this.users = response;
+          console.log(`${user.email}'s status updated.`);
         },
         error: (err) => {
-            console.error('Error updating user status:', err);
-          },
-        });
+          console.error('Error updating user status:', err);
+        },
+      });
     }
   }
 
-  openChangePasswordModal(user : IUser) {
-    this.currentSelectedUser = user;
-    this.isModalOpen = true;
+  openChangePasswordModal(user: IUser) {
+    this.userService.setCurrentUser(user);
+    this.userService.openPasswordModal(true);
   }
 
   closePasswordModal() {
-    this.isModalOpen = false;
-    this.currentSelectedUser = {};
+    this.userService.openPasswordModal(false);
+    this.userService.setCurrentUser(null);
   }
 
-  ngOnDestroy(): void {
-    // Set the state to false when leaving the Admin Dashboard
-    this.userSerivce.setAdminDashboardState(false);
-  }
-
-  getStatus(user : IUser): string  {
-    return user.active ? 'Lock' : 'Unlock'
+  getStatus(user: IUser): string {
+    return user.active ? 'Lock' : 'Unlock';
   }
 }

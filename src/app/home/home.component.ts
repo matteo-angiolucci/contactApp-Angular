@@ -20,6 +20,7 @@ import { AuthDirective } from 'app/utility/directives/auth.directive';
   styleUrl: './home.component.less',
 })
 export class HomeComponent implements OnInit {
+
   user$: Observable<ILoginResponse | null>;
   selectedContact$: Observable<IContactDetails | undefined>;
   isOpenForm$: Observable<boolean>;
@@ -35,7 +36,7 @@ export class HomeComponent implements OnInit {
     private authService: AuthService,
     private contactService: ContactService,
   ) {
-    this.user$ = this.authService.user$;
+    this.user$ = this.authService.userLogged$;
     this.selectedContact$ = this.contactService.selectedContact$;
     this.isOpenForm$ = this.contactService.isFormOpen$;
     this.selectedLetter$ = this.contactService.selectedLetter$;
@@ -74,7 +75,7 @@ export class HomeComponent implements OnInit {
             (contact) => contact.categoryId === selectedCategory,
           );
         }
-
+        console.log("SUBSCRIPTION ON GOING HOME-COMPONENT")
         return combinedContacts;
       }),
     );

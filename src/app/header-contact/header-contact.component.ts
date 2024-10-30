@@ -1,12 +1,11 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ILoginResponse } from '@dm/ILogin-response.model';
 import { AuthService } from 'app/services/auth.service';
-import { LocalStorageService } from 'app/services/local-storage.service';
 import { UserService } from 'app/services/user.service';
 import { AuthDirective } from 'app/utility/directives/auth.directive';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
@@ -16,36 +15,39 @@ import { Observable } from 'rxjs';
   templateUrl: './header-contact.component.html',
   styleUrl: './header-contact.component.less',
 })
-export class HeaderContactComponent implements OnInit{
+export class HeaderContactComponent{
   user$: Observable<ILoginResponse | null>;
-  isOnAdminDashboard = false;
+  adminDashbaord$ : Observable<boolean> = of(false);
 
-  constructor(private authService: AuthService, private route: Router , private userService : UserService,private localStorageService: LocalStorageService) {
-    this.user$ = this.authService.user$;
+  constructor(private authService: AuthService, private router: Router , private userService : UserService) {
+    this.user$ = this.authService.userLogged$;
+    this.adminDashbaord$ = this.userService.isOnAdminDashboard$
   }
 
-  ngOnInit(): void {
-     this.userService.isOnAdminDashboard$.subscribe(isOnAdminDashboard => {
-      this.isOnAdminDashboard = isOnAdminDashboard;
-    });
-  }
 
 
   goToSignUpPage() {
-    this.route.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
 
   logOut() {
-    this.localStorageService.removeItem('currentUser');
-    this.route.navigate(['/login']);
+    this.router.navigate(['/login']);
     this.authService.unsetUser();
   }
 
-  goToAdminorGoBack() {
-    if (!this.isOnAdminDashboard) {
-     this.route.navigate(['/admin-dashboard'])
+  // Toggle the state when clicking the button
+  toggleAdminDashboard() {
+
+    const isOnAdminDashboard = this.userService.getAdminDashboardState();
+
+    // Toggle the state using the service's method
+    this.userService.setAdminDashboardState(!isOnAdminDashboard);
+
+    // Navigate based on the new state
+    if (isOnAdminDashboard) {
+      this.router.navigate(['/home']);
     } else {
-      this.route.navigate(['/home'])
+      this.router.navigate(['/admin-dashboard']);
     }
   }
 }

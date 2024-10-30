@@ -11,12 +11,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class UserService {
   private apiUrl = environment.USERS_SERVICE_ENDPOINT;
 
-  // BehaviorSubject to hold whether the user is on the Admin Dashboard or not
   private isOnAdminDashboardSubject = new BehaviorSubject<boolean>(false);
-  // Expose the subject as an observable
   isOnAdminDashboard$ = this.isOnAdminDashboardSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private openPasswordChangeModalSubject = new BehaviorSubject<boolean>(false);
+  openPasswordChangeModal$ = this.openPasswordChangeModalSubject.asObservable();
+
+  private currentSelectedUserSubeject = new BehaviorSubject<IUser | null>(null);
+  currentUserSelected$ = this.currentSelectedUserSubeject.asObservable();
+
+  private userListSubject = new BehaviorSubject<IUser[]>([]);
+  userList$ = this.userListSubject.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.loadUsers();
+  }
 
   getUsers(): Observable<IUser[]> {
     return this.http.get<IUser[]>(`${this.apiUrl}/list`);
@@ -35,18 +44,39 @@ export class UserService {
   }
 
   changePassword(
-    user: IUser,
     loggedUser: IUser,
+    user: IUser,
     newPassword: string,
   ): Observable<passwordChangeApiReturn> {
     return this.http.patch<passwordChangeApiReturn>(
       `${this.apiUrl}/changePassword`,
-      { user, loggedUser , newPassword},
+      { user, loggedUser, newPassword },
     );
   }
 
-  // Method to update the subject when navigating to/from Admin Dashboard
+  // Method to update the subject state
   setAdminDashboardState(isOnAdminDashboard: boolean) {
     this.isOnAdminDashboardSubject.next(isOnAdminDashboard);
+  }
+
+  // Method to get the current state (optional, for synchronous checks)
+  getAdminDashboardState(): boolean {
+    return this.isOnAdminDashboardSubject.value;
+  }
+
+  // Method to update the subject when navigating to/from Admin Dashboard
+  setCurrentUser(currentUser: IUser | null) {
+    this.currentSelectedUserSubeject.next(currentUser);
+  }
+
+  // Method to update the subject of the open password modal
+  openPasswordModal(isPasswordModalOpen: boolean) {
+    this.openPasswordChangeModalSubject.next(isPasswordModalOpen);
+  }
+
+  loadUsers() {
+    this.getUsers().subscribe((users) => {
+      this.userListSubject.next(users);
+    });
   }
 }

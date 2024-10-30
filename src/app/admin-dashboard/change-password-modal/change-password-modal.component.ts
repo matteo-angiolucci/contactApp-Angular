@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -9,9 +9,10 @@ import {
 } from '@angular/forms';
 import { passwordChangeApiReturn } from '@dm/passwordChange-API.model';
 import { IUser } from '@dm/user.model';
-import { LocalStorageService } from 'app/services/local-storage.service';
+import { AuthService } from 'app/services/auth.service';
 import { UserService } from 'app/services/user.service';
 import { passwordMatchValidator } from 'app/utility/valiadators/password_match_validator';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -21,9 +22,12 @@ import { passwordMatchValidator } from 'app/utility/valiadators/password_match_v
   templateUrl: './change-password-modal.component.html',
   styleUrl: './change-password-modal.component.less',
 })
-export class ChangePasswordModalComponent implements OnInit {
-  @Input() user!: IUser;
+export class ChangePasswordModalComponent implements OnInit, OnDestroy {
   isOpen = false;
+  loggedUser: IUser | null = null;
+  currentUserSelected: IUser | null = null;
+  users : IUser[] = [];
+  private destroy$ = new Subject<void>();
 
   @Output() closeModalE = new EventEmitter<void>();
   outputMessage = '';
@@ -39,31 +43,39 @@ export class ChangePasswordModalComponent implements OnInit {
     },
   );
 
-  constructor(private userService: UserService, private localStorageService : LocalStorageService) {}
+  constructor(private userService: UserService, private authService: AuthService) {
+  }
 
   ngOnInit(): void {
-    this.loadPassword();
+    combineLatest([this.authService.userLogged$ , this.userService.getUsers(), this.userService.currentUserSelected$])
+    .pipe(takeUntil(this.destroy$)) // Add takeUntil here
+    .subscribe({
+      next: ([userLogged , users, currentUserSelected]) => {
+        console.log("EMISSIONS ON PASSWORD CHANGE COMPONENT:", userLogged , users, currentUserSelected);
+        this.loggedUser = userLogged;
+        this.users = users.filter((user) => user.email !== userLogged?.email);
+        this.currentUserSelected = currentUserSelected;
+        this.loadPassword();
+      },
+    });
   }
+
 
   onSubmit() {
     if (this.changePasswordForm.valid) {
-      const currentuserString = this.localStorageService.getItem('currentUser');
-      const currentUser: IUser = currentuserString
-      ? JSON.parse(currentuserString)
-      : null;
       const currentPassword = this.currentPassword.value;
       const newPassword = this.newPassword.value;
-      if (currentPassword && newPassword && this.user && currentUser) {
+      if (currentPassword && newPassword && this.loggedUser && this.currentUserSelected) {
         this.userService
-          .changePassword(this.user, currentUser, newPassword)
+          .changePassword(this.loggedUser, this.currentUserSelected, newPassword)
           .subscribe({
             next: (data : passwordChangeApiReturn) => {
               this.outputMessage = data.outputmessage;
-
+              this.onClose();
             },
             error: (errorResponse) => {
               console.error(errorResponse);
-              this.outputMessage = errorResponse.error.message;
+              this.outputMessage = errorResponse.error.outputmessage;
             },
           });
       }
@@ -85,13 +97,12 @@ export class ChangePasswordModalComponent implements OnInit {
   }
 
   onClose() {
-    console.log('clciked on close button');
     this.closeModalE.emit();
   }
 
   loadPassword() {
     this.changePasswordForm.patchValue({
-      currentPassword: this.user.password,
+      currentPassword: this.currentUserSelected?.password,
     });
   }
 
@@ -107,5 +118,10 @@ export class ChangePasswordModalComponent implements OnInit {
       }
       return { valuesNotEqual: true };
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -27,14 +27,16 @@ export class ContactDetailComponent implements OnInit, OnDestroy {
 
   user$: Observable<ILoginResponse | null>;
   selectedContact$: Observable<IContactDetails | undefined>;
+
   private destroy$ = new Subject<void>();
+
+
   isEditing = false;
 
   initialData!: IContactDetails;
 
   contactId: number | null = null;
 
-  //userRoleEnum = UserRole;
 
   isLoading = false;
 
@@ -61,32 +63,22 @@ export class ContactDetailComponent implements OnInit, OnDestroy {
     public categoriesService: CategoryService,
     private authService: AuthService,
   ) {
-    this.user$ = this.authService.user$;
+    this.user$ = this.authService.userLogged$;
     this.selectedContact$ = this.contactService.selectedContact$;
   }
 
   ngOnInit(): void {
     this.contactService.selectedContact$
-      .pipe(takeUntil(this.destroy$))
+    .pipe(takeUntil(this.destroy$)) // Clean up on destroy
       .subscribe((contact) => {
         if (contact?.id !== undefined && contact.id !== -1) {
           this.contactId = contact.id;
           this.loadContact(this.contactId);
         }
+        console.log("SUBSCIRPTION CONTACT-DETAIL COMPONENT")
       });
-
-      // Subscribe to form value changes to listen to those changes
-  //   this.contactForm.valueChanges.subscribe((formValues) => {
-  //     console.log(formValues);
-  //   });
   }
 
-
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   //valditore numero telefono XXX-XXXXX
   phoneFormatValidator(control: AbstractControl): ValidationErrors | null {
@@ -198,5 +190,12 @@ export class ContactDetailComponent implements OnInit, OnDestroy {
 
   get category() {
     return this.contactForm.controls.categoryId;
+  }
+
+
+  ngOnDestroy(): void {
+    // Emit a value to complete all subscriptions
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

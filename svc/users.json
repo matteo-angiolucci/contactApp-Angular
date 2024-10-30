@@ -1,13 +1,13 @@
 [
     {
         "id": "8901234567890123",
-        "email": "user@mail.com",
-        "password": "abc",
+        "email": "Hank@mail.com",
+        "password": "1234",
         "name": "Hank",
         "role": "User",
         "lastName": "Lopez",
         "dateOfBirth": "1980-12-30T00:00:00.000Z",
-        "active": true
+        "active": false
     },
     {
         "id": "2801587896151465",
@@ -27,7 +27,7 @@
         "role": "Guest",
         "lastName": "test",
         "dateOfBirth": "2024-10-17T00:00:00.000Z",
-        "active": true
+        "active": false
     },
     {
         "id": "7354524831630256",
@@ -37,6 +37,6 @@
         "role": "User",
         "lastName": "testL",
         "dateOfBirth": "2008-01-21T00:00:00.000Z",
-        "active": true
+        "active": false
     }
 ]

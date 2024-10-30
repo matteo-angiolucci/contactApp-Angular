@@ -29,7 +29,6 @@ export class LoginComponent {
   errorMessage = '';
   isEmailNotRegistered = false;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor(
     private authService: AuthService,
     private route: Router,

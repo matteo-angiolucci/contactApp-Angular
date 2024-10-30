@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { UserRole } from '@dm/roles';
+import { IUser } from '@dm/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ import { UserRole } from '@dm/roles';
 export class AuthService {
 
   private userSubjectlogged = new BehaviorSubject<ILoginResponse | null>(null);
-  user$ = this.userSubjectlogged.asObservable();
+  userLogged$ = this.userSubjectlogged.asObservable();
 
   private apiUrl = environment.GENERAL_SERVICE_ENDPOINT;
 
@@ -46,19 +47,19 @@ export class AuthService {
   }
 
   isLogged$(): Observable<boolean> {
-    return this.user$.pipe(
+    return this.userLogged$.pipe(
       map(value => !!value)
     )
   }
 
   userRole$(): Observable<UserRole | undefined>{
-    return this.user$.pipe(
+    return this.userLogged$.pipe(
       map(value => value?.role)
     )
   }
 
   userName$(): Observable<string | undefined>{
-    return this.user$.pipe(
+    return this.userLogged$.pipe(
       map(value => value?.name)
     )
   }
@@ -68,24 +69,10 @@ export class AuthService {
       this.userRoleSignal.set(role);
     }
 
-  // AuthService
-// isLoggedInLocalStorageInfo(): boolean {
-//   const user = JSON.parse(this.localStorageService.getItem('currentUser')!);
-//   if (user) {
-//     return true;
-//   } else {
-//     this.localStorageService.removeItem('currentUser');
-//     return false;
-//   }
-// }
+    getCurrentUser(): IUser | null {
+      return this.userSubjectlogged.getValue();
+    }
 
-  // Populate the subject with user data from localStorage (on service initialization)
-  // private loadUserFromLocalStorage(): void {
-  //   const user = JSON.parse(this.localStorageService.getItem('currentUser')!);
-  //   if (user) {
-  //     this.userSubjectlogged.next(user);  // Set BehaviorSubject with stored user
-  //   }
-  // }
 
 
 
