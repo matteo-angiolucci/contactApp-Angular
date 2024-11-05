@@ -117,7 +117,7 @@ main = () => {
 
     await saveContent(content, contactsDB);
 
-    res.status(200).send(payload);
+    res.status(200).send(content);
   });
 
 
@@ -195,8 +195,8 @@ main = () => {
    // middlefunction to check if the user is an admin
 const isAdmin = (req, res, next) => {
   const user = req.body.loggedUser;
-  console.log('[REQ-BODY' , req.body);
-  console.log('[ADMIN-FUNCTION CHECK] ==> ' , user);
+  //console.log('[REQ-BODY' , req.body);
+  //console.log('[ADMIN-FUNCTION CHECK] ==> ' , user);
 
   // Check if the user exists and has the role of 'ADMIN'
   if (user && user.role === 'Admin') {
@@ -228,9 +228,9 @@ const isAdmin = (req, res, next) => {
 
     await saveContent(content, usersDB);
 
-    const contentFilter = content.filter(user => user.email !== loggedUser?.email)
+    //const contentFilter = content.filter(user => user.email !== loggedUser?.email)
 
-    res.status(200).send(contentFilter);
+    res.status(200).send(content[idx]);
   });
 
 
@@ -258,7 +258,7 @@ const isAdmin = (req, res, next) => {
 
       await saveContent(content, usersDB);
 
-      res.status(200).send({ outputmessage: "Password updated successfully" });
+      res.status(200).send({ outputmessage: "Password updated successfully" , user: content[idx] } );
     });
 
 

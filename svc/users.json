@@ -7,7 +7,7 @@
         "role": "User",
         "lastName": "Lopez",
         "dateOfBirth": "1980-12-30T00:00:00.000Z",
-        "active": false
+        "active": true
     },
     {
         "id": "2801587896151465",
@@ -22,21 +22,21 @@
     {
         "id": "12341231",
         "email": "guest@email.com",
-        "password": "123",
+        "password": "1234",
         "name": "guest",
         "role": "Guest",
         "lastName": "test",
         "dateOfBirth": "2024-10-17T00:00:00.000Z",
-        "active": false
+        "active": true
     },
     {
         "id": "7354524831630256",
         "email": "user@email.com",
-        "password": "123",
+        "password": "1234",
         "name": "test",
         "role": "User",
         "lastName": "testL",
         "dateOfBirth": "2008-01-21T00:00:00.000Z",
-        "active": false
+        "active": true
     }
 ]

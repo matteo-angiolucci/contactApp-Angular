@@ -35,8 +35,8 @@ export class UserService {
     loggedUser: IUser,
     user: IUser,
     status: boolean,
-  ): Observable<IUser[]> {
-    return this.http.patch<IUser[]>(`${this.apiUrl}/activeDeactive`, {
+  ): Observable<IUser> {
+    return this.http.patch<IUser>(`${this.apiUrl}/activeDeactive`, {
       loggedUser,
       user,
       active: status,
@@ -73,6 +73,14 @@ export class UserService {
   openPasswordModal(isPasswordModalOpen: boolean) {
     this.openPasswordChangeModalSubject.next(isPasswordModalOpen);
   }
+
+  updateUserSubjectList(userChanged: IUser) {
+    const updatedList = this.userListSubject.value.map((user: IUser) =>
+      user.id === userChanged.id ? { ...user, ...userChanged } : user
+    );
+
+    this.userListSubject.next(updatedList);
+}
 
   loadUsers() {
     this.getUsers().subscribe((users) => {

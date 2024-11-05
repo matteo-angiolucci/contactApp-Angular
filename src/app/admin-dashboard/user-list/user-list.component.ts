@@ -65,8 +65,8 @@ export class UserListComponent implements OnInit {
   onToggleUserStatus(user: IUser, newStatus: boolean) {
     if (this.loggedUser) {
       this.userService.updateUserStatus(this.loggedUser, user, newStatus).subscribe({
-        next: (response) => {
-          console.log(`${user.email}'s status updated.`);
+        next: (response : IUser) => {
+          this.userService.updateUserSubjectList(response)
         },
         error: (err) => {
           console.error('Error updating user status:', err);
@@ -83,7 +83,7 @@ export class UserListComponent implements OnInit {
   closePasswordModal() {
     this.userService.openPasswordModal(false);
     this.userService.setCurrentUser(null);
-  }
+    }
 
   getStatus(user: IUser): string {
     return user.active ? 'Lock' : 'Unlock';

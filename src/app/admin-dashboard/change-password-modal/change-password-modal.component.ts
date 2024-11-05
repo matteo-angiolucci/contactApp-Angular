@@ -26,7 +26,6 @@ export class ChangePasswordModalComponent implements OnInit, OnDestroy {
   isOpen = false;
   loggedUser: IUser | null = null;
   currentUserSelected: IUser | null = null;
-  users : IUser[] = [];
   private destroy$ = new Subject<void>();
 
   @Output() closeModalE = new EventEmitter<void>();
@@ -53,7 +52,6 @@ export class ChangePasswordModalComponent implements OnInit, OnDestroy {
       next: ([userLogged , users, currentUserSelected]) => {
         console.log("EMISSIONS ON PASSWORD CHANGE COMPONENT:", userLogged , users, currentUserSelected);
         this.loggedUser = userLogged;
-        this.users = users.filter((user) => user.email !== userLogged?.email);
         this.currentUserSelected = currentUserSelected;
         this.loadPassword();
       },
@@ -71,6 +69,7 @@ export class ChangePasswordModalComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (data : passwordChangeApiReturn) => {
               this.outputMessage = data.outputmessage;
+              this.userService.updateUserSubjectList(data.user);
               this.onClose();
             },
             error: (errorResponse) => {
