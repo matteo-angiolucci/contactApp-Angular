@@ -1,0 +1,119 @@
+@import "../../../assets/variables.less";
+
+*,
+*::before,
+*::after{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "RedHatText-Regular";
+  src: url('../../../assets/fonts/RedHatText-Regular.ttf') format("truetype");
+}
+
+.full-card{
+  padding: 0;
+.card{
+  margin-top: 2rem;
+}
+
+.top{
+  display: flex;
+  flex-direction: column;
+
+  img{
+    border-radius: .75rem;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+  .container-button{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+
+
+
+    button.button{
+      padding: .7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border-radius: 2rem;
+      border: 2px solid @text-Red;
+      width: 40%;
+      cursor:pointer;
+
+      .button-icon{
+        width: 2rem;
+        height: 2rem;
+      }
+
+      span.add-cart-text{
+        font-family: 'RedHatText-Regular', sans-serif;
+        font-weight: 900;
+        font-size: 1.2rem;
+        color: black;
+
+        &:hover{
+          color: @text-Red;
+        }
+
+      }
+    }
+
+}
+
+.btn-color-red{
+  background-color: @text-Red;
+}
+
+.btn-color-white{
+  background-color: white;
+
+}
+
+button {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 100%;
+  padding: 0.3rem;
+  background-color: @text-Red;
+  border: 0.1rem solid white;
+
+  .button-icon-small {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  span{
+    font-family: 'RedHatText-Regular', sans-serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: white;
+  }
+}
+
+.content{
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  font-family: 'RedHatText-Regular', sans-serif;
+
+
+  .category{
+    color: @text_Rose-500;
+  }
+  .name{
+    color: @text_Rose-900;
+  }
+  .price{
+    color: @text-Red;
+  }
+
+}
+}

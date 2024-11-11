@@ -1,0 +1,42 @@
+<div class="full-card">
+  <div class="card">
+    <div class="top">
+      <img src={{product.image.desktop}} alt={{product.name}}>
+
+      <div class="container-button">
+
+        <ng-container *ngIf="cartService.getProductQuantity(product.id) < 1; else addMoreItems">
+          <button class="button btn-color-white" (click)="addToCart()">
+            <img src="assets/svg/icon-add-to-cart.svg" alt="Add to Cart" class="button-icon" />
+            <span class="add-cart-text">Add to Cart</span></button>
+        </ng-container>
+
+
+
+        <ng-template #addMoreItems>
+          <button class="button btn-color-red">
+            <button (click)="decreaseProductFromCart()">
+              <img src="assets/svg/icon-decrement-quantity.svg" alt="Decrease quantity" class="button-icon-small">
+            </button>
+            <span>{{ cartService.getProductQuantity(product.id) }}</span>
+            <button (click)="addProductToCart()">
+              <img src="assets/svg/icon-increment-quantity.svg" alt="Increase quantity" class="button-icon-small">
+            </button>
+          </button>
+
+        </ng-template>
+
+
+
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <h4 class="category">{{product.category}}</h4>
+    <h3 class="name">{{product.name}}</h3>
+    <h3 class="price">{{product.price.toLocaleString("en-us" , {
+      currency:"USD",
+      style: "currency"
+      })}}</h3>
+  </div>
+</div>

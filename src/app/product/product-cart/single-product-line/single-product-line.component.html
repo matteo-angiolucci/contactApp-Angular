@@ -1,0 +1,24 @@
+<div class="container-info">
+  <div class="right-container">
+    <div class="product-name">
+      <h3>{{ cartItem.product.name }}</h3>
+    </div>
+    <div class="quantity-price-contaner">
+      <div class="quantity-text">
+        <span> {{ cartItem.quantity}}x </span>
+      </div>
+      <div class="unit-price">
+        <span>&#64;{{ cartItem.product.price | currency}} </span>
+      </div>
+      <div class="product-total-price">
+        <span>{{ cartItem.product.price * cartItem.quantity | currency }} </span>
+      </div>
+    </div>
+  </div>
+  <div class="left-container">
+    <button class="button-remove-cart" (click)="removeItem()">
+      <img src="assets/svg/icon-remove-item.svg" alt="Delete form Cart" class="button-icon" />
+    </button>
+  </div>
+</div>
+<hr>

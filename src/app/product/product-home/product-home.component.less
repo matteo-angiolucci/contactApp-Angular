@@ -1,0 +1,59 @@
+@import "../../../assets/variables.less";
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "RedHatText-Regular";
+  src: url('../../../assets/fonts/RedHatText-Regular.ttf') format("truetype");
+  font-weight: normal;
+}
+
+.global-container {
+  display: flex;
+  background-color: @text_Rose-50;
+  height: 100%;
+
+  /* Media query for responsiveness */
+  @media (max-width: 940px) {
+    flex-direction: column; /* Stack containers vertically */
+  }
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+
+  @media (max-width: 940px) {
+    width: 100%;
+  }
+
+  .product-wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    @media (max-width: 940px) {
+      width: 100%;
+    }
+  }
+
+  h1 {
+    font-family: 'RedHatText-Regular', sans-serif;
+  }
+}
+
+.right-container {
+  padding: 1rem;
+  width: 30%; /* Adjust width here as needed */
+
+  @media (max-width: 940px) {
+    width: 100%;
+  }
+
+}

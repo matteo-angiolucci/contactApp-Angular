@@ -1,0 +1,13 @@
+<div class="global-container">
+  <div class="left-container">
+    <h1>DESSERT</h1>
+    <div class="product-wrapper">
+      @for (item of (products$ | async); track $index) {
+      <app-product-card [product]=item></app-product-card>
+      }
+    </div>
+  </div>
+  <div class="right-container">
+    <app-product-cart></app-product-cart>
+  </div>
+</div>

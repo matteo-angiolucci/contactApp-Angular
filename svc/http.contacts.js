@@ -6,6 +6,7 @@ const { existsSync, readFileSync, writeFileSync } = require("fs");
 
 const contactsDB = resolve("svc", "db.json");
 const usersDB = resolve("svc", "users.json");
+const productDb = resolve("svc", "data.json")
 
 saveContent = async (content,path) => {
   const formattingOptions = {
@@ -48,6 +49,10 @@ parseList = (content) => {
 parseListUsers = (content) => {
   return content.map(({ id, email, password, role , active }) => ({ id, email, password, role, active }));
 };
+
+parseListProducts = (content) =>{
+  return content.map(({ image, name, category, price, id  }) => ({ image, name, category, price , id }));
+}
 
 main = () => {
   const app = express();
@@ -260,6 +265,14 @@ const isAdmin = (req, res, next) => {
 
       res.status(200).send({ outputmessage: "Password updated successfully" , user: content[idx] } );
     });
+
+
+    // get Products List
+  app.get("/api/products/list", async (_, res) => {
+    const content = await loadContent(productDb);
+    const result = parseListProducts(content);
+    res.status(200).send(result);
+  });
 
 
   app.listen(9999, () => console.log("API Server listening on port 9999!"));

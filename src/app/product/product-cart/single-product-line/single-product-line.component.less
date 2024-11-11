@@ -1,0 +1,83 @@
+@import "../../../../assets/variables.less";
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "RedHatText-Regular";
+  src: url('../../../../assets/fonts/RedHatText-Regular.ttf') format("truetype");
+  font-weight: normal;
+
+}
+
+.container-info{
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+
+  .right-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .product-name{
+      font-family: "RedHatText-Regular";
+      color: @text_Rose-900;
+      font-weight: 500;
+    }
+
+    .quantity-price-contaner{
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      font-family: "RedHatText-Regular";
+
+      .quantity-text{
+        color: @text-Red;
+        font-weight: 600;
+      }
+
+      .unit-price{
+        color: @text_Rose-500;
+      }
+
+      .product-total-price{
+        color: @text_Rose-500;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .left-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    button.button-remove-cart{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem;
+      border-radius: 5rem;
+      border: 0.1rem solid @text_Rose-400;
+      background-color: transparent;
+      cursor: pointer;
+
+      img.button-icon{
+        width: 0.8rem;
+        height: 0.8rem;
+      }
+    }
+
+  }
+
+
+
+}

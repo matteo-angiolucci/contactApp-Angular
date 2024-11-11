@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="item-count-text">
+    <h2>Your Cart ({{ cartService.cartQuantity() }})</h2>
+  </div>
+
+
+    <!-- Show this section when cartQuantity is 0 -->
+    <div *ngIf="cartService.cartQuantity() === 0; else productsCart" class="no-items-in-cart">
+      <img src="assets/svg/illustration-empty-cart.svg" alt="No items in cart">
+      <p>Your added items will appear here</p>
+    </div>
+
+    <!-- Show this section when cartQuantity is not 0 -->
+    <ng-template #productsCart>
+        @for (cartItem of cartService.cartItems(); track $index) {
+          <app-single-product-line [cartItem]="cartItem"></app-single-product-line>
+        }
+       <div class="order-summary">
+          <div class="text-suborder-total">
+            <p>Order Sub-Total</p>
+          </div>
+          <div class="value-subtotal-order">
+            <p>{{cartService.subTotal() | currency}}</p>
+          </div>
+        </div>
+
+        <div class="order-summary">
+          <div class="text-deliveryfee-total">
+            <p>Delivery Fee</p>
+          </div>
+          <div class="value-deliveryfee-order">
+            <p>{{cartService.deliveryFee() | currency}}</p>
+          </div>
+        </div>
+
+        <div class="order-summary">
+          <div class="text-taxes-total">
+            <p>Taxes</p>
+          </div>
+          <div class="value-taxes-order">
+            <p>{{cartService.tax() | currency}}</p>
+          </div>
+        </div>
+
+        <div class="order-summary">
+          <div class="text-totalprice-total">
+            <p>Order Total</p>
+          </div>
+          <div class="value-totalprice-order">
+            <p>{{cartService.totalPrice() | currency}}</p>
+          </div>
+        </div>
+    </ng-template>
+
+
+</div>

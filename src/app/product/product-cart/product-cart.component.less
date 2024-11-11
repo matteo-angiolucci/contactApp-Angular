@@ -1,0 +1,75 @@
+@import "../../../assets/variables.less";
+
+*,
+*::before,
+*::after{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  background-color: white;
+  margin-top: 2rem;
+  border-radius: 2rem;
+
+  .item-count-text{
+    text-align: left;
+    h2{
+      font-family: 'RedHatText-Regular', sans-serif;
+      color: @text-Red;
+      font-weight: bold;
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+  }
+
+  .no-items-in-cart{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+
+    img{
+      width: 100%;
+    }
+
+    p{
+      font-family: 'RedHatText-Regular', sans-serif;
+      color: @text_Rose-500;
+      font-weight: 700;
+    }
+  }
+
+  .order-summary{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+
+    .text-suborder-total,
+    .text-deliveryfee-total,
+    .text-taxes-total,
+    .text-totalprice-total{
+      font-family: 'RedHatText-Regular', sans-serif;
+      color: @text_Rose-900;
+
+    }
+
+    .value-subtotal-order,
+    .value-deliveryfee-order,
+    .value-taxes-order,
+    .value-totalprice-order{
+      font-family: 'RedHatText-Regular', sans-serif;
+      font-weight: 700;
+    }
+
+  }
+
+
+
+
+}
