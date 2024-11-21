@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="banner">
+    <div class="card-front">
+      <div class="card-logo">
+        <img src="../../assets/credit-card/card-logo.svg" alt="">
+      </div>
+      <div class="card-number">
+        <p>{{ cardNumber?.value ? (cardNumber?.value | creditCardFormat) : '0000 0000 0000 0000' }}</p>
+      </div>
+      <div class="card-detail">
+        <p>{{ paymentForm.get('cardHolderName')?.value || 'Name' }}</p>
+        <p>{{ expMonth?.value || '00' }}/{{ paymentForm.get('expYear')?.value || '00' }}</p>
+      </div>
+      <img class="card-front_bg" src="../../assets/credit-card/bg-card-front.png" alt="front-card">
+    </div>
+    <div class="card-back">
+      <div class="card-cvv">
+        <p>{{ cvv?.value || '000' }}</p>
+      </div>
+      <img class="card-back_bg" src="../../assets/credit-card/bg-card-back.png" alt="back-card">
+    </div>
+  </div>
+
+  <div class="form-container">
+  <form [formGroup]="paymentForm" class="payment-form">
+    <label for="cardholder">{{ "card holder" | uppercase }}</label>
+    <input  [ngClass]="{'invalid': cardHolderName!.invalid && cardHolderName!.touched ,'valid': cardHolderName!.valid}"
+    type="text" formControlName="cardHolderName" placeholder="e.g Jane Applessed">
+    <div class="error-text"
+      *ngIf="cardHolderName!.invalid && cardHolderName!.touched">
+      <div *ngIf="cardHolderName!.errors?.['required']">Card holder is required.</div>
+    </div>
+    <label for="cardNumber">{{ "card number" | uppercase }}</label>
+    <input
+      [ngClass]="{'invalid': cardNumber!.invalid && cardNumber!.touched ,'valid': cardNumber!.valid}"
+      type="number" formControlName="cardNumber" placeholder="e.g 1234 5678 9123 0000">
+    <div class="error-text"
+      *ngIf="cardNumber!.invalid && cardNumber!.touched">
+      <div *ngIf="cardNumber!.errors?.['required']">Card number is required.</div>
+      <div *ngIf="cardNumber!.errors?.['pattern']">Invalid cardNumber format must be of 16 digits.</div>
+    </div>
+    <div class="expiration_cvv_group">
+      <div class="expiration-fields">
+        <label for="expDate">{{ "exp . date (MM/YY)" | uppercase }}</label>
+        <div class="expiration-inputs">
+          <input type="text" formControlName="expMonth" placeholder="MM"
+            [ngClass]="{'invalid': expMonth!.invalid && expMonth!.touched ,'valid': expMonth!.valid}">
+          <input type="text" formControlName="expYear" placeholder="YY"
+            [ngClass]="{'invalid': paymentForm.get('expYear')!.invalid && paymentForm.get('expYear')!.touched ,'valid': paymentForm.get('expYear')!.valid}">
+        </div>
+
+      </div>
+      <div class="cvv_group">
+        <label for="cvc">{{ "cvv" | uppercase }}</label>
+        <input type="text" formControlName="cvv" placeholder="e.g 123"
+          [ngClass]="{'invalid': cvv!.invalid &&  cvv!.touched, 'valid': cvv!.valid}">
+      </div>
+    </div>
+    <!-- I will add error messages here for all 3 cases-->
+
+    <div class="error-text"
+      *ngIf="expMonth!.invalid &&  expMonth!.touched">
+      <div *ngIf="expMonth!.errors?.['required']">Month is required.</div>
+      <div *ngIf="expMonth!.errors?.['pattern']">Invalid month format (01-12).</div>
+    </div>
+
+    <div class="error-text"
+      *ngIf="expYear!.invalid && expYear!.touched">
+      <div *ngIf="expYear!.errors?.['required']">Year is required.</div>
+      <div *ngIf="expYear!.errors?.['pattern']">Invalid year format (01-99).</div>
+    </div>
+
+    <div class="error-text"
+      *ngIf="cvv!.invalid && cvv!.touched">
+      <div *ngIf="cvv!.errors?.['required']">Cvv is required.</div>
+      <div *ngIf="cvv!.errors?.['pattern']">Invalid cvv format max 3 digits.</div>
+    </div>
+    <button class="confirm_button" [disabled]="paymentForm.invalid">Confirm</button>
+  </form>
+</div>
+</div>

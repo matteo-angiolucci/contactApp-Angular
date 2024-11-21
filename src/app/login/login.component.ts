@@ -54,7 +54,7 @@ export class LoginComponent {
       this.authService.login(loginForm).subscribe({
         next: (response: ILoginResponse) => {
 
-          localStorage.setItem('currentUser', JSON.stringify({ ...response}));
+          //localStorage.setItem('currentUser', JSON.stringify({ ...response}));
           this.authService.setUser(response);
           this.authService.setUserRole(response.role);
           this.route.navigate(['/home']);

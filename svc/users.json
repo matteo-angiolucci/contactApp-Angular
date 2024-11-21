@@ -2,7 +2,7 @@
     {
         "id": "8901234567890123",
         "email": "Hank@mail.com",
-        "password": "1234",
+        "password": "123",
         "name": "Hank",
         "role": "User",
         "lastName": "Lopez",
@@ -22,7 +22,7 @@
     {
         "id": "12341231",
         "email": "guest@email.com",
-        "password": "1234",
+        "password": "123",
         "name": "guest",
         "role": "Guest",
         "lastName": "test",

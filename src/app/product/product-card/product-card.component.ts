@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component,  Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Product } from '@dm/product.model';
 import { CartService } from 'app/services/productServices/cart.service';
 
@@ -8,39 +8,19 @@ import { CartService } from 'app/services/productServices/cart.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.less'
+  styleUrl: './product-card.component.less',
 })
-export class ProductCardComponent{
+export class ProductCardComponent {
+  @Input({ required: true }) product!: Product;
+
+  constructor(public cartService: CartService) {}
 
 
+  addProductToCart() {
+    this.cartService.addToCart(this.product);
+  }
 
-
-  @Input({required: true}) product!: Product;
-
-
-
-
-
-    constructor(public cartService: CartService) {
-
-    }
-
-
-
-
-    addToCart() {
-      this.cartService.addToCart(this.product);
-    }
-
-    addProductToCart() {
-      this.cartService.addToCart(this.product)
-      }
-
-      decreaseProductFromCart() {
-      this.cartService.removeFromCart(this.product)
-      }
-
-
-
-
-    }
+  decreaseProductFromCart() {
+    this.cartService.removeFromCart(this.product);
+  }
+}

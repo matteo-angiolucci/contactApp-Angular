@@ -6,7 +6,7 @@
       <div class="container-button">
 
         <ng-container *ngIf="cartService.getProductQuantity(product.id) < 1; else addMoreItems">
-          <button class="button btn-color-white" (click)="addToCart()">
+          <button class="button btn-color-white" (click)="addProductToCart()">
             <img src="assets/svg/icon-add-to-cart.svg" alt="Add to Cart" class="button-icon" />
             <span class="add-cart-text">Add to Cart</span></button>
         </ng-container>

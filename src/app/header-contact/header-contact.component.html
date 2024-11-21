@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="showHeader">
   <p class="bold title"> {{ (adminDashbaord$ | async) ? 'ADMIN PAGE ':'CONTACT LIST' }}</p>
   <div class="action-container">
     <ng-container *ngIf="(user$ | async) as user">

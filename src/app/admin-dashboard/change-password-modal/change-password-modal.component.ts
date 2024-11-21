@@ -46,11 +46,11 @@ export class ChangePasswordModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    combineLatest([this.authService.userLogged$ , this.userService.getUsers(), this.userService.currentUserSelected$])
+    combineLatest([this.authService.userLogged$ , this.userService.currentUserSelected$])
     .pipe(takeUntil(this.destroy$)) // Add takeUntil here
     .subscribe({
-      next: ([userLogged , users, currentUserSelected]) => {
-        console.log("EMISSIONS ON PASSWORD CHANGE COMPONENT:", userLogged , users, currentUserSelected);
+      next: ([userLogged , currentUserSelected]) => {
+        console.log("EMISSIONS ON PASSWORD CHANGE COMPONENT");
         this.loggedUser = userLogged;
         this.currentUserSelected = currentUserSelected;
         this.loadPassword();

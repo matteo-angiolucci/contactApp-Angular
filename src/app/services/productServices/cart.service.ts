@@ -10,9 +10,7 @@ import { Product } from '@dm/product.model';
 })
 export class CartService {
 
-  // lets use a SIGNAL TO STORE OUR CART ITEMS
-
-   freeDeliveryAmount = 35;
+  freeDeliveryAmount = 35;
 
   cartItems = signal<CartItem[]>([])
 
@@ -52,10 +50,10 @@ addToCart(product: Product): void {
 
   if (existingItemIndex > -1) {
     // Update the quantity for the existing item
-    const updatedItems = [...this.cartItems()];
+    const updatedItems = [...this.cartItems()]; // Create a copy of the current cart
     updatedItems[existingItemIndex] = {
-      ...updatedItems[existingItemIndex],
-      quantity: updatedItems[existingItemIndex].quantity + 1,
+      ...updatedItems[existingItemIndex],  // Preserve the existing product details
+      quantity: updatedItems[existingItemIndex].quantity + 1, // Increment quantity
     };
     this.cartItems.set(updatedItems); // Trigger signal update
   } else {

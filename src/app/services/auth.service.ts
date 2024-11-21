@@ -5,7 +5,6 @@ import { ILoginModel } from '@dm/login.model';
 import { IRegisterModel } from '@dm/register.model';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { LocalStorageService } from './local-storage.service';
 import { UserRole } from '@dm/roles';
 import { IUser } from '@dm/user.model';
 
@@ -24,8 +23,7 @@ export class AuthService {
 
   userRoleSignal = signal<UserRole>('User');
 
-  constructor(private http: HttpClient, private localStorageService : LocalStorageService) {
-    //this.loadUserFromLocalStorage();
+  constructor(private http: HttpClient) {
    }
 
 
