@@ -19,6 +19,7 @@ export class HeaderContactComponent implements OnInit{
   user$: Observable<ILoginResponse | null>;
   adminDashbaord$ : Observable<boolean> = of(false);
   showHeader = true;
+  isPorjectList = false;
 
   constructor(private authService: AuthService, private router: Router , private userService : UserService) {
     this.user$ = this.authService.userLogged$;
@@ -30,8 +31,16 @@ export class HeaderContactComponent implements OnInit{
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe((event: NavigationEnd) => {
       // Check if the URL contains the specific word
-      this.showHeader = !event.url.includes('creditcard');
+      this.showHeader = !['cart-products', 'credit-card-layout', '4layout','projects','todolist'].some(substring => event.url.includes(substring));
+      this.isPorjectList = !['projects'].some(substring => event.url.includes(substring));
+
     });
+
+
+  }
+
+  headBackToProjectsList(){
+    this.router.navigate(['/projects'])
   }
 
 
@@ -43,8 +52,8 @@ export class HeaderContactComponent implements OnInit{
   }
 
   logOut() {
-    this.router.navigate(['/login']);
     this.authService.unsetUser();
+    this.router.navigate(['/projects'])
   }
 
   // Toggle the state when clicking the button
@@ -57,7 +66,7 @@ export class HeaderContactComponent implements OnInit{
 
     // Navigate based on the new state
     if (isOnAdminDashboard) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/contact-app']);
     } else {
       this.router.navigate(['/admin-dashboard']);
     }

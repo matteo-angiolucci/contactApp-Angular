@@ -23,7 +23,8 @@
     </div>
 
     <div class="button-actions">
-      <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+      <button class="btn btn-primary btn-login" type="submit" [disabled]="!loginForm.valid">Submit</button>
+      <button class="btn btn-secondary btn-regsiter" type="button" (click)="register()">Register</button>
     </div>
 
     <ng-container *ngIf="errorMessage">

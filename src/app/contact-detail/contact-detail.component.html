@@ -71,7 +71,7 @@
     </div>
 
     <div class="button-actions">
-      <button *appAuth="['Admin', 'User']" class="button" type="submit" [disabled]="contactForm.invalid">Save</button>
+      <button *appAuth="['Admin', 'User']" class="button" type="submit" [disabled]="contactForm.invalid">Update</button>
       <button *appAuth="['Admin', 'User']" class="button" type="button" (click)="resetValues()"> {{ isEditing ? 'Revert' : 'Reset' }} </button>
       <button class="button" type="button" (click)="closePopUp()">Close</button>
     </div>

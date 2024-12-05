@@ -30,7 +30,7 @@ export const authGuard: CanActivateFn = () => {
     take(1), // Take the latest value and complete the observable
     map((isLogged : boolean) => {
       if (isLogged) {
-        return true;
+        return true; // Allow access to the route
       } else {
         router.navigate(['/login']);
         return false;

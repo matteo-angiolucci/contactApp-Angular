@@ -1,12 +1,15 @@
 <div class="container" *ngIf="showHeader">
   <p class="bold title"> {{ (adminDashbaord$ | async) ? 'ADMIN PAGE ':'CONTACT LIST' }}</p>
   <div class="action-container">
+    <button class="btn btn-primary"(click)="headBackToProjectsList()">Back to Projects</button>
     <ng-container *ngIf="(user$ | async) as user">
-      <p>Welcome {{ user.name }}! - Role : {{ user.role }}</p>
-
-        <button *appAuth="['Admin']" class="user-admin" (click)="toggleAdminDashboard()"> {{ (adminDashbaord$ | async) ? 'Go to Dashboard' : 'Go to Admin Dashboard' }}</button>
-
-      <button class="log-out" (click)="logOut()">Log out</button>
+        <button *appAuth="['Admin']" class="user-admin btn btn-warning" (click)="toggleAdminDashboard()"> {{ (adminDashbaord$ | async) ? 'Go to Dashboard' : 'Go to Admin Dashboard' }}</button>
+        <p>Welcome {{ user.name }}! - Role : {{ user.role }}</p>
+      <button class="log-out btn btn-danger" (click)="logOut()">Log out</button>
     </ng-container>
   </div>
 </div>
+<div class="container" *ngIf="!showHeader && isPorjectList">
+  <button class="btn btn-primary" (click)="headBackToProjectsList()">Go back to projects</button>
+</div>
+

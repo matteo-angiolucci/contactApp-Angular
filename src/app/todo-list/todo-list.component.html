@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <!-- Input Field -->
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Add a new task or edit an existing one"
+      [(ngModel)]="newTodoTitle"/>
+    <button class="input-group-text" [class.disabled]="!newTodoTitle()" *ngIf="!store.editingTodo()" (click)="submitNewTodo()">
+      <i class="bi bi-plus-circle"></i>
+    </button>
+    <button class="input-group-text" [class.disabled]="!newTodoTitle()" *ngIf="store.editingTodo()" (click)="saveEdit()">
+      <i class="bi bi-check-circle"></i>
+    </button>
+    <button class="input-group-text btn btn-outline-secondary" *ngIf="store.editingTodo()" (click)="cancelEdit()">
+      Cancel
+    </button>
+  </div>
+
+     <!-- button group -->
+     <div class="text-center mb-3">
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button [class.btn-primary]="store.filter() === 'all'" type="button" class="btn border" (click)="store.changeFilter('all')">All</button>
+        <button [class.btn-primary]="store.filter() === 'pending'" type="button" class="btn border" (click)="store.changeFilter('pending')">Pending</button>
+        <button [class.btn-primary]="store.filter() === 'completed'" type="button" class="btn border" (click)="store.changeFilter('completed')">Completed</button>
+      </div>
+      <div class="completed-info">
+        <p> ( {{ store.completedTodos().length }} / {{store.todos().length}} ) </p>
+      </div>
+    </div>
+
+  <!-- Todo List -->
+  <ul class="list-group">
+    <li *ngFor="let todo of store.filteredTodos(); let i = index"
+      class="list-group-item d-flex justify-content-between align-items-center">
+      <!-- Checkbox and Todo Text -->
+      <div>
+        <input type="checkbox" class="form-check-input me-2" [checked]="todo.completed"
+          (click)="store.toggleTodo(todo.id)" />
+        <span [class.text-decoration-line-through]="todo.completed" (click)="editTodo(todo.id)" style="cursor: pointer">
+          {{ todo.title }}
+        </span>
+      </div>
+
+      <!-- Delete Button -->
+      <button class="btn btn-outline-danger btn-sm" (click)="store.deleteTodo(todo.id)">
+        <i class="bi bi-trash"></i>
+      </button>
+    </li>
+  </ul>
+</div>

@@ -57,7 +57,7 @@ export class LoginComponent {
           //localStorage.setItem('currentUser', JSON.stringify({ ...response}));
           this.authService.setUser(response);
           this.authService.setUserRole(response.role);
-          this.route.navigate(['/home']);
+          this.route.navigate(['/contact-app']);
         },
         error: (errorResponse) => {
           // Check for the specific error about email not registered
@@ -80,5 +80,9 @@ export class LoginComponent {
     if (this.isEmailNotRegistered) {
       this.route.navigate(['/register']);
     }
+  }
+
+  register(){
+    this.route.navigate(['/register'])
   }
 }

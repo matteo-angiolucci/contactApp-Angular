@@ -9,8 +9,10 @@
     <strong> Category: </strong> {{ contact.categoryName }}
   </div>
   <div class="button-container">
-    <button (click)="openEditForm(contact)" [disabled]="( isFormOpen$ | async)">Go To Details</button>
-      <button *appAuth="['Admin']" (click)="deleteContact()" [disabled]="( isFormOpen$ | async)">Delete</button>
+    <button class="btn btn-success"(click)="openEditForm(contact)" [disabled]="( isFormOpen$ | async)">Go To Details</button>
+      <!-- <button *appAuth="['Admin']" (click)="deleteContact()" [disabled]="( isFormOpen$ | async)">Delete</button> -->
+      <i *appAuth="['Admin']" class="bi bi-trash" (click)="deleteContact()"></i>
+
 
   </div>
 </div>
