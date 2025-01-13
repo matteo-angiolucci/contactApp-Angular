@@ -1,6 +1,6 @@
 <div class="global-container">
   <div class="left-container">
-    <h1>DESSERT</h1>
+    <h1>{{ 'PRODUCTS_PROJECT.DESSERTS' | translate}}</h1>
     <div class="product-wrapper">
       @for (item of (products$ | async); track $index) {
       <app-product-card [product]=item></app-product-card>

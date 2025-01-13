@@ -2,6 +2,7 @@
   <p class="bold title"> {{ (adminDashbaord$ | async) ? 'ADMIN PAGE ':'CONTACT LIST' }}</p>
   <div class="action-container">
     <button class="btn btn-primary"(click)="headBackToProjectsList()">Back to Projects</button>
+
     <ng-container *ngIf="(user$ | async) as user">
         <button *appAuth="['Admin']" class="user-admin btn btn-warning" (click)="toggleAdminDashboard()"> {{ (adminDashbaord$ | async) ? 'Go to Dashboard' : 'Go to Admin Dashboard' }}</button>
         <p>Welcome {{ user.name }}! - Role : {{ user.role }}</p>
@@ -9,7 +10,20 @@
     </ng-container>
   </div>
 </div>
-<div class="container" *ngIf="!showHeader && isPorjectList">
-  <button class="btn btn-primary" (click)="headBackToProjectsList()">Go back to projects</button>
+<div class="container" *ngIf="!showHeader && isProjectList">
+  <button class="btn btn-primary" (click)="headBackToProjectsList()">{{ 'NAVBAR.GO_BACK_TO_PROJECT' | translate }}</button>
 </div>
+<div class="container justify-content-center gap-1">{{ 'LANGUAGE_MENU.CURRENT_LANGUAGE' | translate}}: {{ multiLangService.languageSignal().longName }}
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#languageModal"
+    >
+       {{ 'LANGUAGE_MENU.CHANGE_LANGUAGE' | translate}}
+    </button>
 
+    <!-- Modal Component -->
+<app-language-modal></app-language-modal>
+
+</div>

@@ -1,0 +1,25 @@
+<div class="modal fade" id="languageModal" tabindex="-1" aria-labelledby="languageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="languageModalLabel">{{ 'LANGUAGE_MENU.SELECT_LANGUAGE' | translate}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group align-items-center">
+          <li
+            *ngFor="let language of languages"
+            class="list-group-item"
+            (click)="selectLanguage(language)"
+            [ngClass]="{'selected-language': language === currentLanguage.longName}"
+          >
+            {{language}}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

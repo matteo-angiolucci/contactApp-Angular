@@ -3,10 +3,13 @@ const { json } = require("body-parser");
 const { format } = require("prettier");
 const { resolve } = require("path");
 const { existsSync, readFileSync, writeFileSync } = require("fs");
+const fs = require('fs');
+const path = require('path');  // <-- Add this line to import the path module
 
 const contactsDB = resolve("svc", "db.json");
 const usersDB = resolve("svc", "users.json");
 const productDb = resolve("svc", "data.json")
+const translationsFolder = path.join(__dirname, 'translations');
 
 saveContent = async (content,path) => {
   const formattingOptions = {
@@ -273,6 +276,35 @@ const isAdmin = (req, res, next) => {
     const result = parseListProducts(content);
     res.status(200).send(result);
   });
+
+// GET translations by language
+app.get('/api/translations/:lang', (req, res) => {
+  const lang = req.params.lang;
+
+  //console.log('LANG', lang)
+  // Path to the requested translation file
+  const translationFilePath = path.join(translationsFolder, `${lang}.json`);
+  //console.log('translationFilePath', translationFilePath);
+
+  // Check if the file exists
+  fs.readFile(translationFilePath, 'utf8', (err, data) => {
+    if (err) {
+      // If file not found or another error occurred
+      if (err.code === 'ENOENT') {
+        return res.status(404).json({ error: 'Language not found' });
+      }
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    // Parse and send the translation file
+    try {
+      const translations = JSON.parse(data);
+      res.json(translations);
+    } catch (parseError) {
+      res.status(500).json({ error: 'Invalid JSON in translation file' });
+    }
+  });
+});
 
 
   app.listen(9999, () => console.log("API Server listening on port 9999!"));

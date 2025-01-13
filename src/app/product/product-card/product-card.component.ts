@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Product } from '@dm/product.model';
+import { TranslatePipe } from '@ngx-translate/core';
 import { CartService } from 'app/services/productServices/cart.service';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.less',
 })

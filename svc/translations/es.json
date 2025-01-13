@@ -1,0 +1,34 @@
+{
+  "NAVBAR": {
+    "TITLE": "Aplicación para cambio de idioma",
+    "MORE": "",
+    "GO_BACK_TO_PROJECT": "Volver a de proyectos"
+  },
+  "MAIN": {
+    "HELLO": "Hola, esta es la aplicación principal para el contenido de cambio de idioma. Mi contenido debería cambiar"
+  },
+  "LANGUAGE_MENU": {
+    "CURRENT_LANGUAGE": "Idioma actual",
+    "CHANGE_LANGUAGE": "Cambiar",
+    "SELECT_LANGUAGE": "Seleccionar idioma"
+  },
+  "PROJECTS_LIST": {
+    "TITLE": "Mis Proyectos",
+    "PRODUCTS": "Productos del carrito",
+    "LAYOUT_FOUR": "Diseño de 4 tarjetas",
+    "CREDIT_CARD": "Diseño de tarjeta de crédito",
+    "CONTACT_APP": "Aplicación de contactos",
+    "TODO_LIST": "Lista de tareas (con implementación de signals)",
+    "LANGAUGE_SIMPLE_PROJECT": "Proyecto simple de idioma"
+  },
+  "PRODUCTS_PROJECT": {
+    "DESSERTS": "Lista de postres",
+    "ADD_TO_CART": "Agregar al carrito",
+    "CART": "Tu carrito",
+    "ORDER_SUB_TOTAL": "Subtotal del pedido",
+    "DELIVERY_FEE": "Costo de entrega",
+    "TAXES": "Impuestos",
+    "ORDER_TOTAL": "Total del pedido",
+    "CART_ADDED_ITEMS": "Tus artículos añadidos aparecerán aquí"
+  }
+}

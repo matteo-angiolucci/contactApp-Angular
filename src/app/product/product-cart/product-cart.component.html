@@ -1,13 +1,13 @@
 <div class="container">
   <div class="item-count-text">
-    <h2>Your Cart ({{ cartService.cartQuantity() }})</h2>
+    <h2> {{ 'PRODUCTS_PROJECT.CART' | translate}} ({{ cartService.cartQuantity() }})</h2>
   </div>
 
 
     <!-- Show this section when cartQuantity is 0 -->
     <div *ngIf="cartService.cartQuantity() === 0; else productsCart" class="no-items-in-cart">
       <img src="assets/svg/illustration-empty-cart.svg" alt="No items in cart">
-      <p>Your added items will appear here</p>
+      <p>{{ 'PRODUCTS_PROJECT.CART_ADDED_ITEMS' | translate}}</p>
     </div>
 
     <!-- Show this section when cartQuantity is not 0 -->
@@ -17,7 +17,7 @@
         }
        <div class="order-summary">
           <div class="text-suborder-total">
-            <p>Order Sub-Total</p>
+            <p>{{ 'PRODUCTS_PROJECT.ORDER_SUB_TOTAL' | translate}}</p>
           </div>
           <div class="value-subtotal-order">
             <p>{{cartService.subTotal() | currency}}</p>
@@ -26,7 +26,7 @@
 
         <div class="order-summary">
           <div class="text-deliveryfee-total">
-            <p>Delivery Fee</p>
+            <p>{{ 'PRODUCTS_PROJECT.DELIVERY_FEE' | translate}}</p>
           </div>
           <div class="value-deliveryfee-order">
             <p>{{cartService.deliveryFee() | currency}}</p>
@@ -35,7 +35,7 @@
 
         <div class="order-summary">
           <div class="text-taxes-total">
-            <p>Taxes</p>
+            <p>{{ 'PRODUCTS_PROJECT.TAXES' | translate}}</p>
           </div>
           <div class="value-taxes-order">
             <p>{{cartService.tax() | currency}}</p>
@@ -44,7 +44,7 @@
 
         <div class="order-summary">
           <div class="text-totalprice-total">
-            <p>Order Total</p>
+            <p>{{ 'PRODUCTS_PROJECT.ORDER_TOTAL' | translate}}</p>
           </div>
           <div class="value-totalprice-order">
             <p>{{cartService.totalPrice() | currency}}</p>

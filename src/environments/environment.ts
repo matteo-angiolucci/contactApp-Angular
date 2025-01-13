@@ -3,4 +3,5 @@ export const environment = {
     GENERAL_SERVICE_ENDPOINT:'http://127.0.0.1:9999/api',
     USERS_SERVICE_ENDPOINT:'http://127.0.0.1:9999/api/users',
     PRODUCT_SERVICE_ENDPOINT: 'http://127.0.0.1:9999/api/products',
+    TRANSALTIONS_URL : 'http://127.0.0.1:9999/api/translations/'
 };

@@ -19,7 +19,7 @@ export class AuthService {
   private apiUrl = environment.GENERAL_SERVICE_ENDPOINT;
 
 
-  // try tp use a signal to store the logged user Role
+  // trying to use a signal to store the logged user Role
 
   userRoleSignal = signal<UserRole>('User');
 

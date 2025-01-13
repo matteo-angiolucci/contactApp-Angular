@@ -1,0 +1,35 @@
+{
+  "NAVBAR": {
+    "TITLE": "App for language change",
+    "MORE": "",
+    "GO_BACK_TO_PROJECT" :"Go back to projects"
+  },
+  "MAIN": {
+    "HELLO": "Hi, this is the main app for the language change content. My content should change"
+  },
+  "LANGUAGE_MENU": {
+    "CURRENT_LANGUAGE" : "Current Language",
+    "CHANGE_LANGUAGE" : "Change",
+    "SELECT_LANGUAGE" : "Select language"
+  },
+  "PROJECTS_LIST" : {
+    "TITLE": "My Projects",
+    "PRODUCTS": "Cart Products",
+    "LAYOUT_FOUR": "4 Layout cards",
+    "CREDIT_CARD" :"Credit Card layout",
+    "CONTACT_APP" : "Contact application",
+    "TODO_LIST" : "Todo List (with signal implementation",
+    "LANGAUGE_SIMPLE_PROJECT" :  "Language simple project"
+  },
+
+  "PRODUCTS_PROJECT" : {
+    "DESSERTS" : "Dessert List",
+    "ADD_TO_CART" : "Add to cart",
+    "CART" : "Your Cart",
+    "ORDER_SUB_TOTAL" :" Order Sub_total",
+    "DELIVERY_FEE": "Delivery fee",
+    "TAXES" : "Taxes",
+    "ORDER_TOTAL":" Order Total",
+    "CART_ADDED_ITEMS" : "Your added items will appear here"
+  }
+}
